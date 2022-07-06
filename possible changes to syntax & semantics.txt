@@ -1,0 +1,37 @@
+Constructors
+	-either
+		-"failure" property (returns that type optionally)
+		-allow adding any type on (returns a type that composes that type)
+		-allowing it to handle any natural transformations (maybe not necessary)
+
+
+
+Functor operations to add to Y:
+	F# name		Type						Y equivalent
+	map		(A -> B) -> (M[A] -> M[B])			?
+
+	apply		M[A -> B] -> (M[A] -> M[B])			?
+
+	return		A -> M[A]					constructors
+
+	bind		(A -> M[B]) -> (M[A] -> M[B])			?
+
+	lift2		((A, B) -> C) -> ((M[A], M[B]) -> M[C])		?
+
+
+
+Splaying & Multicomposability:
+	-maybe allow f(a, b) to be expressed as f(c) where c is of type tuple of A and B
+		-(this would go with the inclusion of multicomposability that I've been contemplating)
+	-example of splaying:
+		f: (A,B,C) -> X
+		d: (A,B)
+		e: (B,C)
+		f(a,b,c) == f(d,c) == f(a,e)
+	-example of multicomposability:
+		pair: (dt, dt) sdt
+		{
+			dt#0 l;
+			dt#1 r;
+		}
+
