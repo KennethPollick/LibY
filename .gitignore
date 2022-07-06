@@ -1,2 +1,22 @@
 #temp
 *.old
+
+
+
+#builds
+bin
+*.exe
+*.out
+*.o
+*.a
+*.so
+
+
+
+#vim files
+*.swp
+
+
+
+#scripts
+*.sh

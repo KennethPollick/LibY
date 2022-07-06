@@ -1,19 +1,21 @@
 /**********************************************************************
 AUTHOR:		Kenneth Pollick <me@kennethpollick.com>
 COPYRIGHT:	2022 Kenneth Pollick
-DATE:		2022-07-03
+DATE:		2022-07-04
 **********************************************************************/
 
 const: dt sdt
 {
 	dt#0 data;
 	
-	ctor(dt#0 d)
+	ctor(dt#0 data)
 	{
-		this.data = d;
+		this.data = data;
 	}
 	
 	operator dt#0 const binary_=();
+	//operator dt#0 const binary=(dt#0 const) {}
+	
 	//(<<) internal = (){};
 	
 	operator dt#0 unary_*()
