@@ -1,64 +1,96 @@
 /**********************************************************************
 AUTHOR:		Kenneth Pollick <me@kennethpollick.com>
 COPYRIGHT:	2022 Kenneth Pollick
-DATE:		2022-07-03
+DATE:		2022-07-30
 **********************************************************************/
 
 obj_node: dt sdt
 {
-	natural mutex obj_count;
-	dt data;
+	dt#0 data;
+	natural obj_count;
 }
 
 
 
+constant ascii array OBJECT_COMP_ERR = "Type object can only be compared against object or its composed type";
+
 object: dt sdt
 {
-	dt obj_node pointer obj;
+	dt#0 obj_node pointer obj;
 	
-	ctor(dt data)
+	ctor(dt#0 object o)
 	{
-		this.obj = allocate(dt obj_node);
+		if ((this.obj = o.obj) ~= NULL)
+			this.obj.obj_count++;
 		
-		this.obj.data = data;
-		(*this.obj.obj_count)++;
+		//TODO: determine whether this syntax is okay
+		//(this.obj = o.obj).obj_count++;
+	}
+	
+	ctor(dt#0 data)
+	{
+		if (is_type(dt#0, object))
+			err("Type object cannot compose object");
+		
+		this.obj = allocate(dt#0 obj_node{data, 0});
 	}
 	
 	dtor()
 	{
-		(*this.obj.obj_count)--;
-		
-		if ((*this.obj.obj_count) == 0)
+		if (this.obj.obj_count == 0)
 			free(this.obj);
+		else
+			this.obj.obj_count--;
 		
-		this.obj = NULL;
+		/*
+		if (DEBUG)
+			this.obj = NULL;
+		*/
 	}
 	
 	
 	
-	dt *(dt object var)
+	boole exists() { return this.obj ~= NULL; }
+	
+	become operator dt#0 unary*()
 	{
 		return this.obj.data;
 	}
-	
-	dt object operator=(dt val)
+
+	operator boole binary=(dt v)
 	{
-		if (is_type(val, object))
+		boole ret;
+
+		if (is_type(v, object))
+			ret = (this.obj == v.obj);
+		else if (is_type(v, dt#0))
+			ret = (this.obj.data == v.obj.data);
+		else
+			err(OBJECT_COMP_ERR);
+
+		return ret;
+		//return ternary(is_type(v, object), (this.obj == v.obj), (this.obj.data == v.obj.data));
+	}
+	
+	become operator dt#0 object unary=(dt v)
+	{
+		if (is_type(v, object))
 		{
-			if ((this.obj ~= val.obj) && (val.obj ~= NULL))
+			if (this.obj ~= v.obj)
 			{
 				if (this.obj ~= NULL)
-				{
-					//clean up
-				}
+					this.dtor();
 				
-				this.obj = val.obj;
-				(*this.obj.obj_count)++;
+				*this = ctor(v);
 			}
+		}
+		else if (is_type(v, dt#0))
+		{
+			this.obj.data = v;
 		}
 		else
 		{
-			this.obj.data = val;
+			err(OBJECT_COMP_ERR);
 		}
 		
 		return *this;

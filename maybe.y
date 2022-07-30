@@ -24,4 +24,12 @@ maybe: dt sdt
 		else
 			return dt#1 maybe();
 	}
+
+	dt#0 there_or_err(string msg)
+	{
+		if (this.exists)
+			return this.data;
+		else
+			err(msg);
+	}
 }

@@ -1,25 +1,29 @@
 /**********************************************************************
 AUTHOR:		Kenneth Pollick <me@kennethpollick.com>
 COPYRIGHT:	2022 Kenneth Pollick
-DATE:		2022-07-04
+DATE:		2022-07-30
 **********************************************************************/
 
 constant natural R_ARRAY_DEFAULT_LENGTH = 10;
 
-//TODO: decide whether r_array should have a separate size and capacity
 r_array: dt list
 {
 	dt#0 array pointer arr;
+	natural len;
 	
-	ctor() { this = ctor(R_ARRAY_DEFAULT_LENGTH); }
+	ctor() { *this = ctor(R_ARRAY_DEFAULT_LENGTH); }
 	
 	ctor(natural length)
 	{
-		this.arr = allocate(dt#0 array[length]);
+		*this = {allocate(dt#0 array[length]), length};
 	}
 	
-	natural length()
+	math natural length() { return this.len; }
+	math natural capacity() { return size(*this.arr); }
+
+	math become operator dt#0 unary[](natural i)
 	{
-		return size(this.arr);
+		// TODO: finish
+		return this.arr[i];
 	}
 }

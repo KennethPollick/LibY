@@ -1,11 +1,13 @@
 /**********************************************************************
 AUTHOR:		Kenneth Pollick <me@kennethpollick.com>
 COPYRIGHT:	2022 Kenneth Pollick
-DATE:		2022-07-04
+DATE:		2022-07-30
 PURPOSE:	To define the Y standard library
 **********************************************************************/
 
 //TODO: deal with namespace collapsing and finalize keyword properties
+
+//TODO: finalize syntax and refactor the standard
 library y
 {
 	library sys;
@@ -16,7 +18,7 @@ library y
 
 	version[n]: sdt;
 
-	ip[v]: sdt;
+	//ip_address[v]: sdt;
 
 	hyperreal: dt sdt;
 	mod[n]: dt sdt;
@@ -27,7 +29,7 @@ library y
 
 	for_range(dt range r, (<<dt#0) proc)
 	{
-		for(dt#0 c = r.low; c < r.low + r.length; c++)
+		for(dt#0 c = r.low; c <= r.high(); c++)
 			proc(c);
 	}
 }

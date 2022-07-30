@@ -4,17 +4,11 @@ COPYRIGHT:	2022 Kenneth Pollick
 DATE:		2022-07-30
 **********************************************************************/
 
-range: dt sdt
+version[n]: sdt
 {
-	dt#0 low;
-	dt#0 length;
+	natural vector[n] p;
+	
+	math become operator natural unary[](natural i) { return v[i]; }
 
-	//TODO: decide whether ctor is needed or range can be a struct
-	ctor(dt#0 low, dt#0 length)
-	{
-		this.low = low;
-		this.length = length;
-	}
-
-	dt#0 high() { return this.low + (this.length - 1); }
+	math become operator version[n] unary=(version[n] v) { this.p = v.p; }
 }

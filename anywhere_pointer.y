@@ -4,17 +4,18 @@ COPYRIGHT:	2022 Kenneth Pollick
 DATE:		2022-07-30
 **********************************************************************/
 
-range: dt sdt
+anywhere_pointer: dt sdt
 {
-	dt#0 low;
-	dt#0 length;
+	dt#0 pointer p;
+	boole dealloc;
 
-	//TODO: decide whether ctor is needed or range can be a struct
-	ctor(dt#0 low, dt#0 length)
+	//ctor(dt#0 pointer p, boole dealloc) { *this = {p, dealloc}; }
+
+	dtor()
 	{
-		this.low = low;
-		this.length = length;
+		if (this.dealloc)
+			free(this.p);
 	}
 
-	dt#0 high() { return this.low + (this.length - 1); }
+	become operator dt#0 unary*() { return *this.p; }
 }

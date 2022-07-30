@@ -4,17 +4,18 @@ COPYRIGHT:	2022 Kenneth Pollick
 DATE:		2022-07-30
 **********************************************************************/
 
-range: dt sdt
+nontrivial: dt sdt
 {
-	dt#0 low;
-	dt#0 length;
+	dt#0 data;
+	boole destroy;
+	
+	//ctor(dt#0 data, boole destroy) { *this = {data, destroy}; }
 
-	//TODO: decide whether ctor is needed or range can be a struct
-	ctor(dt#0 low, dt#0 length)
+	dtor()
 	{
-		this.low = low;
-		this.length = length;
+		if (this.destroy)
+			this.data.dtor();
 	}
 
-	dt#0 high() { return this.low + (this.length - 1); }
+	//become operator dt#0 unary*() { return this.data; }
 }
