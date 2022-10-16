@@ -1,7 +1,7 @@
 /**********************************************************************
 AUTHOR:		Kenneth Pollick <me@kennethpollick.com>
 COPYRIGHT:	2022 Kenneth Pollick
-DATE:		2022-07-30
+DATE:		2022-08-21
 **********************************************************************/
 
 obj_node: dt sdt
@@ -30,7 +30,7 @@ object: dt sdt
 	ctor(dt#0 data)
 	{
 		if (is_type(dt#0, object))
-			err("Type object cannot compose object");
+			err("Type object cannot compose itself");
 		
 		this.obj = allocate(dt#0 obj_node{data, 0});
 	}
@@ -59,16 +59,13 @@ object: dt sdt
 
 	operator boole binary=(dt v)
 	{
-		boole ret;
-
 		if (is_type(v, object))
-			ret = (this.obj == v.obj);
+			return (this.obj == v.obj) || (this.obj.data == v.obj.data);
 		else if (is_type(v, dt#0))
-			ret = (this.obj.data == v.obj.data);
+			return this.obj.data == v;
 		else
 			err(OBJECT_COMP_ERR);
 
-		return ret;
 		//return ternary(is_type(v, object), (this.obj == v.obj), (this.obj.data == v.obj.data));
 	}
 	

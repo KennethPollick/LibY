@@ -1,8 +1,11 @@
 Constructors
 	-either
-		-"failure" property (returns that type optionally)
-		-allow adding any type on (returns a type that composes that type)
-		-allowing it to handle any natural transformations (maybe not necessary)
+		V-"failure" property (returns that type optionally)
+			-two possibilities:
+				-optional of the type
+				-pointer to the type
+		X-allow adding any type on (returns a type that composes that type)
+		X-allowing it to handle any natural transformations (maybe not necessary)
 
 
 
@@ -35,3 +38,31 @@ Splaying & Multicomposability:
 			dt#1 r;
 		}
 
+
+
+
+
+
+
+Data Type Optimization:
+	-allow for optimizing away member variables of a type
+		-to allow for allocators in a type without taking space
+		-add constant modifier to member variables
+
+
+
+Compilation Options:
+	-Optimization Levels:
+		-None
+		-Constants
+		-Data Type and Inlining
+	-constant boole DEBUGGING
+
+
+
+Procedure Mutability:
+	-now:
+		-default
+		-system
+		-math
+	-add modifiers to help with globals
