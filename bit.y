@@ -1,30 +1,70 @@
 /**********************************************************************
 AUTHOR:		Kenneth Pollick <me@kennethpollick.com>
 COPYRIGHT:	2022 Kenneth Pollick
-DATE:		2022-10-16
+DATE:		2022-10-24
 **********************************************************************/
 
 bit_pointer: sdt
 {
 	flags pointer p;
-	flags mask;
+	natural[1] place;
 
-	ctor(dt pointer p, natural[1] place) { *this = {cast(p, flags pointer), MASK(place)}; }
+	ctor(dt pointer p, natural[1] place) { *this = {cast(p, flags pointer), place % 8}; }
 
-	boole is() { return boole(*this.p & mask); }
+	boole exists() { return this.p ~= NULL; }
 
-	set() { *this.p |= mask; }
+	become operator boole unary*() { return (*this.p)[this.place]; }
 
-	reset() { *this.p &= !mask; }
+	set() { (*this.p)[this.place] = T; }
+
+	reset() { (*this.p)[this.place] = F; }
 }
 
 
 
-bit_array[B]: sdt
+constant natural R_BIT_ARRAY_DEFAULT_LENGTH = 8;
+r_bit_array: sdt
 {
-	flags[B] arr;
+	flags pointer arr;	//TODO: fix ambiguity of types with default size abstraction
+	natural len;
 
-	boole index(natural b) { return boole(arr[b/8] & MASK(b%8)); }	//TODO: make a full division builtin (fulldiv/remdiv/eudiv) and probably '&' for flags and boole
+	ctor() { *this = ctor(R_BIT_ARRAY_DEFAULT_LENGTH); }
 
-	bit_pointer ref_index(natural b) { return bit_pointer{&arr[b/8], MASK(b%8)} }
+	ctor(natural bytes)
+	{
+		*this = {allocate(flags[bytes]), bytes};
+	}
+
+	natural length() { return this.len; }
+	natural capacity() { return size(*this.arr); }
+
+	become operator boole unary[](natural b) { return (*this.arr)[b]; }
+
+	//TODO: make a full division builtin (fulldiv/remdiv/eudiv) and probably '&' for flags and boole
+	bit_pointer pointer_to(natural b) { return bit_pointer{cast(&this.arr[b/8], flags pointer), b%8} }
+
+	//TODO: finish r_array and this
+}
+
+
+
+bit_arena[B]: sdt
+{
+	flags[B] store;
+	natural next_free;
+
+	ctor() { this.reset(); }
+	reset() { this.next_free = 0; }
+
+	bit_pointer alloc()
+	{
+		if (this.next_free < B*8)
+		{
+			bit_pointer ret = {(&this.store) + this.next_free/8, this.next_free%8};
+			this.next_free++;
+			return ret;
+		}
+		
+		return bit_pointer{};
+	}
 }
