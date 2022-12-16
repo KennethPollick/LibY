@@ -1,0 +1,24 @@
+deal with namespace collapsing and finalize keyword properties
+
+finalize syntax and refactor the standard
+
+determine whether this syntax is okay: //(this.obj = o.obj).obj_count++;
+
+finish r_array and the rest of the collections
+
+decide whether range can be a struct
+
+
+
+
+
+set down the declarations for print and other basic things
+
+make the formatting procedures for the basic types
+
+parallelism utilities
+
+networking utilities
+
+update syntax in library and remove demos et cetera from the library
+
