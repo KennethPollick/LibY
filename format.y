@@ -1,19 +1,18 @@
 /**********************************************************************
 AUTHOR:		Kenneth Pollick <me@kennethpollick.com>
 COPYRIGHT:	2022 Kenneth Pollick
-DATE:		2022-12-16
-PURPOSE:	To define the Y standard library
+DATE:		2023-01-03
 **********************************************************************/
 
 alias format f;
 
 natural format_size(dt data);
 
-asci array format(dt data)
+format(ascii array pointer str, natural start, dt data)
 {
 	if (is_type_of{data, natural})
 	{
-		asci array[format_size(data)] ret;
+		ascii array[format_size(data)] ret;
 
 		//find vector conversion or bcd instruction
 
@@ -37,17 +36,17 @@ asci array format(dt data)
 	}
 	else if (is_type_of{data, vector})
 	{
-		asci array[format_size(data)] ret;
+		ascii array[format_size(data)] ret;
 		ret[0] = '<';
 		
 		natural i = 1;
 		for (natural c = 0; c < sa{data}-1; c++) //abstract loop (the variable of abstract type that is within gets placed at the same location in memory each time through the loop)
 		{
-			asci array temp = format(data[c]) + ',';
+			ascii array temp = format(data[c]) + ',';
 			//place temp in ret
 		}
 
-		asci array l = format(data[sa{data}-1]);
+		ascii array l = format(data[sa{data}-1]);
 		//place l in ret
 		ret[i] = '>';
 		return ret;
