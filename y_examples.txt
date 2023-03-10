@@ -1,0 +1,39 @@
+//(<<) internal = (){};
+
+//[op_specifiers] [proc_specifiers] [return_type] [proc_name]([arg_list]);	Procedure Declaration Grammar of Y
+
+
+
+
+
+real vector[3] mutex position;
+
+main()
+{
+	real vector[3] p;
+
+	position.try_lock(1);
+	/* critical section */
+	p = (*position);
+	(*position) = p;
+	//position.data		
+	position.unlock(1);
+
+	/* ill advised to used use (*position) */
+}
+
+
+
+
+
+dispatch
+{
+	foo(a, 0);	//as if foo is wrapped in a parallel hyperexpression since there are multiple in a dispatch/parallel block
+	foo(a, 5);	//perhaps warn if foo is a (<<) procedure since it wouldn't be that useful to run in parallel because arguments are allowed in dispatch/parallel block 
+}
+
+
+
+
+
+
