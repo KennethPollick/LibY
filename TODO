@@ -1,8 +1,18 @@
 deal with namespace collapsing and finalize keyword properties
 
 finalize syntax and refactor the standard
+	-perhaps change operators to have names in declarations of user defined types (dereference, equality, assignment, et cetera)
+		-come up with names for the odd ones
+	-fix size{} ambiguity
 
-determine whether this syntax is okay: //(this.obj = o.obj).obj_count++;
+determine whether these syntaxes are okay:
+	-//(this.obj = o.obj).obj_count++;
+		-assignment of o.obj to this.obj then increment of obj_count of the returned this.obj
+		-this syntax is okay since it's necessary for chaining member procedure calls like with the stream type from the standard library
+	-//this.(x = y);
+		-assignment of this.y to this.x
+		-the member (maybe find a better name) operator would essentially act as a context passer
+		-might be useful for certain tasks but might not be readily understandable
 
 finish r_array and the rest of the collections
 
@@ -17,10 +27,14 @@ set down the declarations for print and other basic things
 make the formatting procedures for the basic types
 
 parallelism utilities
+	-essentially done now since a model of multiprocessing execution is added into the language
 
 networking utilities
+	-probably last to be done
 
 update syntax in library and remove demos et cetera from the library
+	-also update demos
+	-finished updating syntax in the standard library
 
 add dispatch keyword (only use gloabal thread pool) and versions that block and also run in the calling thread
 -task assignment
@@ -31,12 +45,16 @@ add dispatch keyword (only use gloabal thread pool) and versions that block and 
 maybe parallel keyword can have different uses on a block vs a declaration vs a hyperexpression
 
 compiler option for a file that defines natural language aliases and a file that defines global project aliases
+	-natural language aliases seem impractical at this point
 
 
 
-dispatch
-{
-	foo(a, 0);	//as if foo is wrapped in a parallel hyperexpression since there are multiple in a dispatch/parallel block
-	foo(a, 5);	//warning if foo is a (<<) procedure since it wouldn't be that useful to run in parallel because arguments are allowed in dispatch/parallel block 
-}
 
+
+abstract loops
+	-the variable of abstract type that is within gets placed at the same location in memory (top of the stack) each time through the loop
+
+one variable of abstract type is allowed to be allocated on the top of the stack in a procedure at a time
+	-abstract loops are a use of this
+	-if multiple are needed, an arena can be used as the one variable that can then allocate to the rest
+	-should, in conjuction with great types like array and vector, allow use of variables/types without needing to specify pointers as often

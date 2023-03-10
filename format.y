@@ -1,13 +1,19 @@
 /**********************************************************************
 AUTHOR:		Kenneth Pollick <me@kennethpollick.com>
-COPYRIGHT:	2022 Kenneth Pollick
-DATE:		2023-01-03
+COPYRIGHT:	2022-2023 Kenneth Pollick
+DATE:		2023-03-10
 **********************************************************************/
 
 alias format f;
 
-natural format_size(dt data);
+natural format_size(dt data)
+{
+	return size{data};
+}
 
+//TODO: perhaps split format into multiple procedures, one for smaller types that returns strings and one for bigger types that write into a given buffer
+
+//TODO: actually swap to writing into str instead of returning strings
 format(ascii array pointer str, natural start, dt data)
 {
 	if (is_type_of{data, natural})
@@ -36,20 +42,18 @@ format(ascii array pointer str, natural start, dt data)
 	}
 	else if (is_type_of{data, vector})
 	{
-		ascii array[format_size(data)] ret;
-		ret[0] = '<';
+		//place '<' in str
 		
 		natural i = 1;
-		for (natural c = 0; c < sa{data}-1; c++) //abstract loop (the variable of abstract type that is within gets placed at the same location in memory each time through the loop)
+		//abstract loop (the variable of abstract type gets placed top of the stack each time through the loop (stays the same address))
+		for (natural c = 0; c < size{data}-1; c++)
 		{
 			ascii array temp = format(data[c]) + ',';
-			//place temp in ret
+			//place temp in str
 		}
-
-		ascii array l = format(data[sa{data}-1]);
-		//place l in ret
-		ret[i] = '>';
-		return ret;
+		
+		ascii array last = format(data[size{data}-1]);
+		//place last+'>' in str
 	}
 }
 

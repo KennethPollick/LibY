@@ -1,14 +1,15 @@
 /**********************************************************************
 AUTHOR:		Kenneth Pollick <me@kennethpollick.com>
-COPYRIGHT:	2022 Kenneth Pollick
-DATE:		2022-07-30
+COPYRIGHT:	2022-2023 Kenneth Pollick
+DATE:		2023-03-10
 **********************************************************************/
 
 version[n]: sdt
 {
 	natural vector[n] p;
 	
-	math become operator natural unary[](natural i) { return v[i]; }
+	static become operator natural unary_[](natural i) { return v[i]; }
 
-	math become operator version[n] unary=(version[n] v) { this.p = v.p; }
+	//TODO: fix inheritance of natural equality
+	static become operator version[n] unary_=(version[n] v) { this.p = v.p; }
 }

@@ -3,7 +3,12 @@ Constructors
 		V-"failure" property (returns that type optionally)
 			-two possibilities:
 				-optional of the type
+					-octor
+						-need to see if there's a better letter to prepend
 				-pointer to the type
+					-"fctor"
+						-f prepended to the ctor
+						-is most of the word factory, as well
 		X-allow adding any type on (returns a type that composes that type)
 		X-allowing it to handle any natural transformations (maybe not necessary)
 
@@ -64,5 +69,5 @@ Procedure Mutability:
 	-now:
 		-default
 		-system
-		-math
+		-static
 	-add modifiers to help with globals

@@ -1,7 +1,7 @@
 /**********************************************************************
 AUTHOR:		Kenneth Pollick <me@kennethpollick.com>
-COPYRIGHT:	2022 Kenneth Pollick
-DATE:		2022-08-21
+COPYRIGHT:	2022-2023 Kenneth Pollick
+DATE:		2023-03-10
 **********************************************************************/
 
 obj_node: dt sdt
@@ -14,6 +14,7 @@ obj_node: dt sdt
 
 constant ascii array OBJECT_COMP_ERR = "Type object can only be compared against object or its composed type";
 
+//TODO: perhaps move object, as well, to a standard library centered on migration from other languages
 object: dt sdt
 {
 	dt#0 obj_node pointer obj;
@@ -29,16 +30,16 @@ object: dt sdt
 	
 	ctor(dt#0 data)
 	{
-		if (is_type(dt#0, object))
-			err("Type object cannot compose itself");
+		if (is_type{dt#0, object})
+			err "Type object cannot compose itself";
 		
-		this.obj = allocate(dt#0 obj_node{data, 0});
+		this.obj = allocate{dt#0 obj_node{data, 0}};
 	}
 	
 	dtor()
 	{
 		if (this.obj.obj_count == 0)
-			free(this.obj);
+			free{this.obj};
 		else
 			this.obj.obj_count--;
 		
@@ -52,26 +53,26 @@ object: dt sdt
 	
 	boole exists() { return this.obj ~= NULL; }
 	
-	become operator dt#0 unary*()
+	become operator dt#0 unary_*()
 	{
 		return this.obj.data;
 	}
 
-	operator boole binary=(dt v)
+	operator boole binary_=(dt v)
 	{
-		if (is_type(v, object))
+		if (is_type{v, object})
 			return (this.obj == v.obj) || (this.obj.data == v.obj.data);
-		else if (is_type(v, dt#0))
+		else if (is_type{v, dt#0})
 			return this.obj.data == v;
 		else
-			err(OBJECT_COMP_ERR);
+			err OBJECT_COMP_ERR;
 
-		//return ternary(is_type(v, object), (this.obj == v.obj), (this.obj.data == v.obj.data));
+		//return ternary{is_type(v, object), (this.obj == v.obj), (this.obj.data == v.obj.data)};
 	}
 	
-	become operator dt#0 object unary=(dt v)
+	become operator dt#0 object unary_=(dt v)
 	{
-		if (is_type(v, object))
+		if (is_type{v, object})
 		{
 			if (this.obj ~= v.obj)
 			{
@@ -81,13 +82,13 @@ object: dt sdt
 				*this = ctor(v);
 			}
 		}
-		else if (is_type(v, dt#0))
+		else if (is_type{v, dt#0})
 		{
 			this.obj.data = v;
 		}
 		else
 		{
-			err(OBJECT_COMP_ERR);
+			err OBJECT_COMP_ERR;
 		}
 		
 		return *this;

@@ -1,4 +1,4 @@
-//test, not actually in the Y standard library
+//even though this type will be a part of the language, not the Y standard library, it will show not only the interface for the type but also the convention for ensuring invariants in types
 maybe: dt sdt
 {
 	boole exists;
@@ -24,12 +24,21 @@ maybe: dt sdt
 		else
 			return dt#1 maybe();
 	}
+	
+	//convention for ensuring invariants: err when invariant is broken (can be optimized away when checked beforehand)
+	become operator dt#0 unary_*()
+	{
+		if (!this.exists)
+			err "Maybe type did not contain a value";
+		
+		return this.data;
+	}
 
-	dt#0 there_or_err(string msg)
+	dt#1 match(dt#1 default, (dt<<dt#0) proc)
 	{
 		if (this.exists)
-			return this.data;
+			return proc(this.data);
 		else
-			err(msg);
+			return default;
 	}
 }

@@ -1,7 +1,7 @@
 /**********************************************************************
 AUTHOR:		Kenneth Pollick <me@kennethpollick.com>
-COPYRIGHT:	2022 Kenneth Pollick
-DATE:		2022-10-24
+COPYRIGHT:	2022-2023 Kenneth Pollick
+DATE:		2023-03-10
 **********************************************************************/
 
 bit_pointer: sdt
@@ -32,16 +32,21 @@ r_bit_array: sdt
 
 	ctor(natural bytes)
 	{
-		*this = {allocate(flags[bytes]), bytes};
+		*this = {allocate{flags[bytes]}, bytes};
 	}
 
 	natural length() { return this.len; }
-	natural capacity() { return size(*this.arr); }
+	natural capacity() { return size{*this.arr}; }
 
-	become operator boole unary[](natural b) { return (*this.arr)[b]; }
+	become operator boole unary_[](natural b) { return (*this.arr)[b]; }
 
-	//TODO: make a full division builtin (fulldiv/remdiv/eudiv) and probably '&' for flags and boole
-	bit_pointer pointer_to(natural b) { return bit_pointer{cast(&this.arr[b/8], flags pointer), b%8} }
+	//TODO: finalize the full division hyperexpression keyword (rem) and probably make '&' for flags and boole
+	bit_pointer pointer_to(natural b)
+	{
+		natural q;
+		natural r = rem { q = b/8 };	//TODO: make list of hyperexpressions so shifts can be used here
+		return bit_pointer{cast{&this.arr[q], flags pointer}, r}
+	}
 
 	//TODO: finish r_array and this
 }
@@ -60,7 +65,9 @@ bit_arena[B]: sdt
 	{
 		if (this.next_free < B*8)
 		{
-			bit_pointer ret = {(&this.store) + this.next_free/8, this.next_free%8};
+			natural q;
+			natural r = rem { q = this.next_free/8 };
+			bit_pointer ret = {(&this.store) + q, r};
 			this.next_free++;
 			return ret;
 		}

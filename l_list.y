@@ -1,3 +1,9 @@
+/**********************************************************************
+AUTHOR:		Kenneth Pollick <me@kennethpollick.com>
+COPYRIGHT:	2022-2023 Kenneth Pollick
+DATE:		2023-03-10
+**********************************************************************/
+
 node: dt sdt
 {
 	dt#0 data;
@@ -6,6 +12,7 @@ node: dt sdt
 
 
 
+//TODO: needs evaluation (syntax and capacity variable)
 l_list: dt list
 {
 	dt#0 node pointer head;
@@ -13,19 +20,17 @@ l_list: dt list
 
 	ctor()
 	{
-		this.head = NULL;
-		length = 0;
+		*this = {NULL, 0};
 	}
 
 	ctor(natural starting_length)
 	{
-		this.length = starting_length;
-		this.head = NULL;
+		*this = {NULL, starting_length};
 
 		dt#0 node pointer pointer target = &this.head;
-		for (natural c = 0; c < this.length; c++)
+		loop (this.length - 1)
 		{
-			*target = allocate(dt#0 node{dt#0(), NULL});
+			*target = allocate{dt#0 node{dt#0(), NULL}};
 			target = &target.next;
 		}
 	}
@@ -41,7 +46,7 @@ l_list: dt list
 
 	prepend(dt#0 element)
 	{
-		this.head = allocate(dt#0 node{element, this.head});
+		this.head = allocate{dt#0 node{element, this.head}};
 		this.length++;
 	}
 
@@ -49,12 +54,12 @@ l_list: dt list
 	{
 		this.length++;
 
-		dt#0 node pointer new = allocate(dt#0 node{element, NULL});
+		dt#0 node pointer new = allocate{dt#0 node{element, NULL}};
 
 		dt#0 node pointer look = this.head;
-		if (look)
+		if (look ~= NULL)
 		{
-			while (look.next != NULL)
+			while (look.next ~= NULL)
 				look = look.next;
 			look.next = new;
 			return;
@@ -72,14 +77,14 @@ l_list: dt list
 			look = look.next;
 		}
 
-		look.next = allocate(dt#0 node{element, look.next});
+		look.next = allocate{dt#0 node{element, look.next}};
 
 		this.length++;
 	}
 
 
 
-	math dt#0 unary[](natural index)
+	static become operator dt#0 unary_[](natural index)
 	{
 		dt#0 node pointer look = this.head;
 
@@ -88,7 +93,7 @@ l_list: dt list
 			look = look.next;
 		}
 
-		become look.data;
+		return look.data;
 	}
 }
 

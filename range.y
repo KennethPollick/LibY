@@ -1,15 +1,15 @@
 /**********************************************************************
 AUTHOR:		Kenneth Pollick <me@kennethpollick.com>
-COPYRIGHT:	2022 Kenneth Pollick
-DATE:		2022-07-30
+COPYRIGHT:	2022-2023 Kenneth Pollick
+DATE:		2023-03-10
 **********************************************************************/
 
+//maybe check if bounded and unbounded ranges are neede
 range: dt sdt
 {
 	dt#0 low;
 	dt#0 length;
 
-	//TODO: decide whether ctor is needed or range can be a struct
 	ctor(dt#0 low, dt#0 length)
 	{
 		this.low = low;

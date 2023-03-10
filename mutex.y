@@ -1,16 +1,23 @@
+/**********************************************************************
+AUTHOR:		Kenneth Pollick <me@kennethpollick.com>
+COPYRIGHT:	2022-2023 Kenneth Pollick
+DATE:		2023-03-10
+**********************************************************************/
+
+//also now going to be part of the language to coincide with the addition of the execution model
 mutex: dt sdt
 {
 	dt#0 data;
-	natural pid;
+	natural pid;	//TODO: implementation change
 	boole using;
 	
-	/*mutex()
+	/*ctor()
 	{
 		data = dt();
 		pid = 0;
 	}*/
 	
-	mutex(dt initial)
+	ctor(dt initial)
 	{
 		*this = mutex{initial, 0, F};
 	}
@@ -35,10 +42,10 @@ mutex: dt sdt
 			this.pid = my_pid;
 			return (this.pid == my_pid);
 		}
-		return false;
+		return F;
 	}
 	
-	become operator dt unary*()
+	become operator dt unary_*()
 	{
 		return this.data;
 	}
@@ -48,24 +55,7 @@ mutex: dt sdt
 		if (this.pid == my_pid)
 		{
 			this.pid = 0;
-			this.using = false;
+			this.using = F;
 		}
 	}
 }
-
-real vector[3] mutex position;
-
-integer main()
-{
-	real vector[3] p;
-
-	position.try_lock(1);
-	/* critical section */
-	p = (*position);
-	(*position) = p;
-	//position.data		
-	position.unlock(1);
-
-	/* ill advised to used use (*position) */
-}
-

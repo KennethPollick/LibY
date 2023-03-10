@@ -1,5 +1,5 @@
 # The Y Standard Library
-*By Kenneth Pollick 2022 All Rights Reserved.* [^1]
+*By Kenneth Pollick 2022-2023 All Rights Reserved.* [^1]
 
 The Y Standard Library is, as its name implies, the standard library of [the Y Programming Language](https://www.kennethpollick.com/software/y.html), which I've been working on for some years off and on now.
 I am currently working on finalizing the standard library and the features of Y together as there are constructs that I definitely want in one of them, so after I complete the standard library, I will be finishing the [Y Compiler and Interpreter (YCI)](https://www.kennethpollick.com/software/yci.html).

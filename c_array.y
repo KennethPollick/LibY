@@ -1,21 +1,29 @@
+/**********************************************************************
+AUTHOR:		Kenneth Pollick <me@kennethpollick.com>
+COPYRIGHT:	2022-2023 Kenneth Pollick
+DATE:		2023-03-10
+**********************************************************************/
+
+//needs evaluation
+//TODO: check whether deprecation is needed for c_array
 c_array: dt ndt
 {
-	dt pointer heap;
-	dt pointer r_array indeces;
+	memory pointer heap;
+	dt#0 pointer r_array indeces;
 	
-	c_array()
+	ctor()
 	{
 		
 	}
 	
-	~c_array()
+	dtor()
 	{
-		free heap;
-		free indeces;
+		free{heap};
+		free{indeces};
 	}
 	
-	dt operator[](natural index)
+	operator dt#0 unary_[](natural index)
 	{
-		return (dt)(heap + indeces[index]);
+		return cast{dt#0, (heap + indeces[index])};
 	}
 }
