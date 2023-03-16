@@ -2,8 +2,52 @@ deal with namespace collapsing and finalize keyword properties
 
 finalize syntax and refactor the standard
 	-perhaps change operators to have names in declarations of user defined types (dereference, equality, assignment, et cetera)
+		-assignment	=	unary
+		-equality	==	binary
+		-address_of	&	unary
+		-dereference	*	unary
+		-subscript	[]	unary
+		-addition	+	binary
+		-negation	-	unary
+		-subtraction	-	binary
+		-multiplication	*	binary
+		-division	/	binary
+		-inversion	/	unary
+		-modulo		%	binary
+		-exponentiation	^	binary
+		-shift_left	<<	binary
+		-shift_right	>>	binary
+		-rol		<<<	binary
+		-ror		>>>	binary
+		-bitwise_or	|	binary
+		-bitwise_and	&	binary
+		-bitwise_xor	^	binary
+		-bitwise_not	!	unary
+		-less_than	<	binary
+		-greater_than	>	binary
+		-or		\/	binary
+		-and		/\	binary
+		-shortcut_or	||	binary
+		-shortcut_and	&&	binary
+		-negation	~	unary
+		-implication	->	binary
+		-xor		><	binary
+		-biconditional	<->	binary
+		-ternary_cmp	<=>	binary
+		-dot		.	binary
 		-come up with names for the odd ones
-	-fix size{} ambiguity
+	-fixed ambiguity with default size abstraction
+		-before
+			-abstract:	"natural	n;"
+			-default:	"natural	n;"
+			-concrete:	"natural[B]	n;"
+		-after
+			-abstract:	"natural	n;"
+			-default:	"natural[]	n;"
+			-concrete:	"natural[B]	n;"
+	-fix size{} ambiguity from swap to hyperexpressions
+		-size{ value } for size abstraction of the value
+		-SIZE{ value } for byte size of the type of the value
 
 determine whether these syntaxes are okay:
 	-//(this.obj = o.obj).obj_count++;
@@ -37,10 +81,10 @@ update syntax in library and remove demos et cetera from the library
 	-finished updating syntax in the standard library
 
 add dispatch keyword (only use gloabal thread pool) and versions that block and also run in the calling thread
--task assignment
-	-version with both "fills from the bottom," and version that runs in the calling thread but doesn't block "fills from the top"
-	-calling thread takes off the task queue
-	-maybe a hybrid version
+	-task assignment
+		-version with both "fills from the bottom," and version that runs in the calling thread but doesn't block "fills from the top"
+		-calling thread takes off the task queue
+		-maybe a hybrid version
 
 maybe parallel keyword can have different uses on a block vs a declaration vs a hyperexpression
 
