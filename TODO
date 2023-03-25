@@ -2,40 +2,8 @@ deal with namespace collapsing and finalize keyword properties
 
 finalize syntax and refactor the standard
 	-perhaps change operators to have names in declarations of user defined types (dereference, equality, assignment, et cetera)
-		-assignment	=	unary
-		-equality	==	binary
-		-address_of	&	unary
-		-dereference	*	unary
-		-subscript	[]	unary
-		-addition	+	binary
-		-negation	-	unary
-		-subtraction	-	binary
-		-multiplication	*	binary
-		-division	/	binary
-		-inversion	/	unary
-		-modulo		%	binary
-		-exponentiation	^	binary
-		-shift_left	<<	binary
-		-shift_right	>>	binary
-		-rol		<<<	binary
-		-ror		>>>	binary
-		-bitwise_or	|	binary
-		-bitwise_and	&	binary
-		-bitwise_xor	^	binary
-		-bitwise_not	!	unary
-		-less_than	<	binary
-		-greater_than	>	binary
-		-or		\/	binary
-		-and		/\	binary
-		-shortcut_or	||	binary
-		-shortcut_and	&&	binary
-		-negation	~	unary
-		-implication	->	binary
-		-xor		><	binary
-		-biconditional	<->	binary
-		-ternary_cmp	<=>	binary
-		-dot		.	binary
 		-come up with names for the odd ones
+		-now in operator_names.txt
 	-fixed ambiguity with default size abstraction
 		-before
 			-abstract:	"natural	n;"
@@ -102,3 +70,24 @@ one variable of abstract type is allowed to be allocated on the top of the stack
 	-abstract loops are a use of this
 	-if multiple are needed, an arena can be used as the one variable that can then allocate to the rest
 	-should, in conjuction with great types like array and vector, allow use of variables/types without needing to specify pointers as often
+
+
+
+
+
+block structure for switch & choice statements
+	-makes nice visual & lingual separation of cases
+	-allows for easier refactoring between switch or choice statements and if statements
+	-might bring the enum type back
+
+interface property for variables to work with the link statement
+	-instead of just injecting a library name since that should be constant at compiletime, and there's no structure for it at runtime
+	-will allow for more complex structures around dynamic loading while still allowing for optimizing the interface variable away with dynamic linking
+	-makes for another complex interaction between the constant and parallel properties
+	-maybe name it bibliographic
+	-the link statement is now an expression
+
+exporting symbols is now based off of type
+	-instead of whether the possibly exported variable is constant or not
+		-since procedure variables and other types that needed the keyword variable to mutate were an inconsistency
+		-and importing symbols via the link statement is now based on type
