@@ -1,0 +1,38 @@
+
+Name		Glyph(s)	n-ary		Operand Type(s)
+
+
+assignment	=		unary		dt
+equality	==		binary		dt
+address_of	&		unary		dt
+dereference	*		unary		pointer
+subscript	[]		unary		ndt
+addition	+		binary		group
+negation	-		unary		group
+subtraction	-		binary		group
+multiplication	*		binary		ring
+division	/		binary		ring
+inversion	/		unary		ring
+modulo		%		binary		ring
+exponentiation	^		binary		algebra
+shift_left	<<		binary		
+shift_right	>>		binary		
+rol		<<<		binary		
+ror		>>>		binary		
+bitwise_or	|		binary		flags
+bitwise_and	&		binary		flags
+bitwise_xor	^		binary		flags
+bitwise_not	!		unary		flags
+less_than	<		binary		
+greater_than	>		binary		
+or		\/		binary		boole
+and		/\		binary		boole
+shortcut_or	||		binary		boole
+shortcut_and	&&		binary		boole
+negation	~		unary		boole
+implication	->		binary		boole
+xor		><		binary		boole
+biconditional	<->		binary		boole
+ternary_cmp	<=>		binary		
+dot		.		binary		vector
+

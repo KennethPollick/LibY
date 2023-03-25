@@ -28,7 +28,7 @@ maybe: dt sdt
 	//convention for ensuring invariants: err when invariant is broken (can be optimized away when checked beforehand)
 	become operator dt#0 unary_*()
 	{
-		if (!this.exists)
+		if (~this.exists)
 			err "Maybe type did not contain a value";
 		
 		return this.data;
