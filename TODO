@@ -12,6 +12,7 @@ finalize syntax and refactor the standard
 		-after
 			-abstract:	"natural	n;"
 			-default:	"natural[]	n;"
+				-also literals of basic types are of default size abstraction to allow for more use of abstract type that's immediately concretized (size abstraction inference)
 			-concrete:	"natural[B]	n;"
 	-fix size{} ambiguity from swap to hyperexpressions
 		-size{ value } for size abstraction of the value
