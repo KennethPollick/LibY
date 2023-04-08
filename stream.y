@@ -1,7 +1,7 @@
 /**********************************************************************
 AUTHOR:		Kenneth Pollick <me@kennethpollick.com>
 COPYRIGHT:	2023 Kenneth Pollick
-DATE:		2023-03-12
+DATE:		2023-04-06
 **********************************************************************/
 
 //this should work now
@@ -20,7 +20,7 @@ constant stream: (dt, dt) sdt
 		dt#1 maybe in;
 		dt#0 maybe out;
 
-		if (this.more ~= NULL)
+		if (this.previous ~= NULL)
 		{
 			in = this.previous.apply(value);
 			out = filter(in);
