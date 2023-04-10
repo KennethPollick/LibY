@@ -1,0 +1,23 @@
+
+no constants
+	-not happening
+
+
+
+one constant keyword
+	-only at the beginning of variable declarations
+		-insufficient
+	-extention of the C style use of the const
+		-in the correct direction
+		-is in kind with the way I think about my type system as an extention of the C style with stuff like C's "int ***" to Y's "integer[4] array[2,4] pointer"
+		-constantness then propagates like how abstract types do but on the other side of reference types
+
+
+
+two constant keywords
+	-one for mere immutability and one for constantness
+		-constants are for compiletime and maybe init-time
+		-immutable variables are for variables populated at runtime
+		-currently looking at both keywords being properties to apply to types in declarations
+			-both propagate the same as above
+
