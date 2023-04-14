@@ -11,6 +11,86 @@ one constant keyword
 		-in the correct direction
 		-is in kind with the way I think about my type system as an extention of the C style with stuff like C's "int ***" to Y's "integer[4] array[2,4] pointer"
 		-constantness then propagates like how abstract types do but on the other side of reference types
+		-grammar
+			-keyword on the left of the type it affects (aligns with the use of keywords throughout the rest of Y)
+				-constantness propagates to the left
+					-gives no information about where the reference type is when only the leaf type is marked constant
+					-puts the reference type on the right of the keyword when the root is marked constant
+					-probably the grammar Y will have as the keyword on the left is how Y works in all other cases and propagating to the left seems more useful
+						-the constant in the first example separates the two types it makes so on the right versus the two types it doesn't on the left
+						-also, I think making the root type constant is more likely: such as having an immutable reference parameter to a mutable variable
+					-examples:
+						-constant pointer array to arrays of bytes
+							byte array[2] constant pointer array[5] arr;
+						-pointer array to constant arrays of bytes
+							constant byte array[2] pointer array[5] arr;
+						-constant pointer array to constant arrays of bytes
+							constant byte array[2] constant pointer array[5] arr;
+						-constant pointer to dt
+							dt constant pointer p;
+						-pointer to constant dt
+							constant dt pointer p;
+						-constant pointer to constant dt
+							constant dt constant pointer p;
+						-only non-reference types
+							constant real[] vector[3] array[7] rs;
+				-constantness propagates to the right
+					-gives no information about where the reference type is when only the root type is marked constant
+					-puts the reference type two to the right of the keyword when the leaf is marked constant
+					-examples:
+						-constant pointer array to arrays of bytes
+							byte array[2] pointer constant array[5] arr;
+						-pointer array to constant arrays of bytes
+							byte constant array[2] pointer array[5] arr;
+						-constant pointer array to constant arrays of bytes
+							byte constant array[2] pointer constant array[5] arr;
+						-constant pointer to dt
+							dt constant pointer p;
+						-pointer to constant dt
+							constant dt pointer p;
+						-constant pointer to constant dt
+							constant dt constant pointer p;
+						-only non-reference types
+							real[] vector[3] constant array[7] rs;
+			-keyword on the right of the type it affects
+				-constantness propagates to the left
+					-gives no information about where the reference type is when only the leaf type is marked constant
+					-puts the reference type on the left of the keyword when the root is marked constant
+					-examples:
+						-constant pointer array to arrays of bytes
+							byte array[2] pointer constant array[5] arr;
+						-pointer array to constant arrays of bytes
+							byte constant array[2] pointer array[5] arr;
+						-constant pointer array to constant arrays of bytes
+							byte constant array[2] pointer constant array[5] arr;
+						-constant pointer to dt
+							dt pointer constant p;
+						-pointer to constant dt
+							dt constant pointer p;
+						-constant pointer to constant dt
+							dt constant pointer constant p;
+						-only non-reference types
+							real[] constant vector[3] array[7] rs;
+				-constantness propagates to the right
+					-gives no information about where the reference type is when only the root type is marked constant
+					-puts the reference type on the right of the keyword when the leaf is marked constant
+					-probably the closest to C const-ness
+					-examples:
+						-constant pointer array to arrays of bytes
+							byte array[2] pointer array[5] constant arr;
+						-pointer array to constant arrays of bytes
+							byte array[2] constant pointer array[5] arr;
+						-constant pointer array to constant arrays of bytes
+							byte array[2] constant pointer array[5] constant arr;
+						-constant pointer to dt
+							dt pointer constant p;
+						-pointer to constant dt
+							dt constant pointer p;
+						-constant pointer to constant dt
+							dt constant pointer constant p;
+						-only non-reference types
+							real[] vector[3] array[7] constant rs;
+			-only the two which have the side the keyword is on and the direction of propagation the same seem good, not putting the keyword in the middle of a group of types affected
 
 
 
