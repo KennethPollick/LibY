@@ -91,6 +91,17 @@ one constant keyword
 						-only non-reference types
 							real[] vector[3] array[7] constant rs;
 			-only the two which have the side the keyword is on and the direction of propagation the same seem good, not putting the keyword in the middle of a group of types affected
+			-none of these syntaxes change the semantics that if a constant abstract type is reified with a reference type, it won't make any types that compose it constant
+				-a way to specify a completely constant variable with abstract types may be useful
+				-with the first form of keyword on the left and constantness propagating to the left, this syntax could be that the keyword is before the variable name
+					-this would indicate that the constantness is applied to the variable itself instead of just its types, so all of it's store would be constant
+						-example:
+							-use
+								dt pointer constant p;
+							-reification
+								dt -> natural[] pointer array[10]
+							-equivalent afterwards
+								constant natural[] constant pointer array[10] constant pointer p;
 
 
 
