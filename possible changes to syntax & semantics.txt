@@ -71,3 +71,10 @@ Procedure Mutability:
 		-system
 		-static
 	-add modifiers to help with globals
+
+
+
+Because of the focus on abstraction and saying what you mean, abstract scoped procedures don't only "template" in the types of the parameters.
+	-They can be called at runtime with the simple compiler transform of parameters changing into immutable pointers to those parameters.
+	-Also, this makes the implicit "this" parameter of types from an immutable pointer to the type into just being of the type it's in.
+
