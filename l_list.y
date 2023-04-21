@@ -1,7 +1,7 @@
 /**********************************************************************
 AUTHOR:		Kenneth Pollick <me@kennethpollick.com>
 COPYRIGHT:	2022-2023 Kenneth Pollick
-DATE:		2023-03-10
+DATE:		2023-04-21
 **********************************************************************/
 
 node: dt sdt
@@ -20,12 +20,12 @@ l_list: dt list
 
 	ctor()
 	{
-		*this = {NULL, 0};
+		this = {NULL, 0};
 	}
 
 	ctor(natural starting_length)
 	{
-		*this = {NULL, starting_length};
+		this = {NULL, starting_length};
 
 		dt#0 node pointer pointer target = &this.head;
 		loop (this.length - 1)

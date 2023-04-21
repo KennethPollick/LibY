@@ -1,7 +1,7 @@
 /**********************************************************************
 AUTHOR:		Kenneth Pollick <me@kennethpollick.com>
 COPYRIGHT:	2022-2023 Kenneth Pollick
-DATE:		2023-03-10
+DATE:		2023-04-21
 **********************************************************************/
 
 //also now going to be part of the language to coincide with the addition of the execution model
@@ -19,7 +19,7 @@ mutex: dt sdt
 	
 	ctor(dt initial)
 	{
-		*this = mutex{initial, 0, F};
+		this = mutex{initial, 0, F};
 	}
 	
 	

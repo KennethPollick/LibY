@@ -1,7 +1,7 @@
 /**********************************************************************
 AUTHOR:		Kenneth Pollick <me@kennethpollick.com>
 COPYRIGHT:	2023 Kenneth Pollick
-DATE:		2023-04-06
+DATE:		2023-04-21
 **********************************************************************/
 
 //this should work now
@@ -11,18 +11,17 @@ constant stream: (dt, dt) sdt
 	(dt#0 maybe << dt#1 maybe) filter;
 	constant (dt#1, dt) stream pointer previous;
 
-	ctor((dt#0 maybe << dt#1 maybe) filter) { *this = {filter, NULL}; }
+	ctor((dt#0 maybe << dt#1 maybe) filter) { this = {filter, NULL}; }
 
 	(dt#3, dt#0) stream with_filter((dt maybe << dt#0 maybe) filter) { return stream{filter, this}; }
 
 	dt#0 maybe apply(dt maybe value)
 	{
-		dt#1 maybe in;
 		dt#0 maybe out;
 
 		if (this.previous ~= NULL)
 		{
-			in = this.previous.apply(value);
+			dt#1 maybe in = this.previous.apply(value);
 			out = filter(in);
 		}
 		else

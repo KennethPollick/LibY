@@ -1,0 +1,22 @@
+
+So, since last time, I've been thinking about this problem of constantness that I talked about in my last stream as well as a semantic change about procedures with parameters of abstract types vs parameters of pointers to abstract types because the last example in my document that I've been editing is just a distinction.
+
+Last time on stream I had only talked about having two keywords for constantness, but I did not go over the syntax that I came up with later for the "constant" keyword (although, it will be the same, about, for the dynamic constant).
+
+I won't go through the complete analysis listed in constantness.txt as you can go through it at your leisure, but the point is that the sensible choice out of the four seems to be keyword on the left of the type it affects and the constantness propagating to the left (essentially, if I make a constant array of naturals, I need put the keyword to affect the natural type ("constant natural[] array[10] arr;")). This brings me to the lack of semantics in that system alone to make a variable completely constant if a type is abstract which also happens to also be a shorthand for making a variable of concrete type completely constant. This could be quite useful (and necessary in certain circumstances).
+
+
+
+Originally, I had been planning that procedures with parameters of abstract types (or any abstract scoped procedure, for that matter) would be reified upon the compiler finding a call to it, so that would be a call to a procedure taking a list called with an r_array would always compile to a call to (or inlining of) a procedure that takes an r_array; the scope would be concretized by reifying the parameters' types into their concrete subtypes. This would make it hard to impossible to use abstract scoped procedures in already compiled libraries and would force the use of pointers to those abstract types when that is further from what was actually intended. Since it is already a known technique, I've decided to opt for possibility of concretizing the procedure by use of the classic "convert variable's type to the immutable pointer to that type" (actually the whole reason we have high level languages as they hide these essential pointers like with a normal variable that holds a natural number).
+
+This has quite a few nice benefits: this generalizes a technique I was using to allow for pointer parameters for operators ("matrix pointer A = B * C;" where B & C are also matrix pointers), this allows for writing more toward what one means with proper abstractions (and works with some arguments passed as pointers and some not), the implicit "this" variable in types can just be of the actual type it's in without the need for object mutation, reference-based type systems like Java and C# (goes with the last one as well).
+
+
+
+
+
+For the rest of the stream, I'll just do the simple rewrite of taking dereference operators off of "this" variables since I've been live for about an hour already.
+Okay, there, the "this" variables are all of the correct type now; I will deal with refactoring to include the new syntax and semantics of constantness later as I have been live for a bit now.
+
+
+			Il Fine

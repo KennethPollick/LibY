@@ -1,7 +1,7 @@
 /**********************************************************************
 AUTHOR:		Kenneth Pollick <me@kennethpollick.com>
 COPYRIGHT:	2022-2023 Kenneth Pollick
-DATE:		2023-03-10
+DATE:		2023-04-21
 **********************************************************************/
 
 obj_node: dt sdt
@@ -24,7 +24,7 @@ object: dt sdt
 		if ((this.obj = o.obj) ~= NULL)
 			this.obj.obj_count++;
 		
-		//TODO: determine whether this syntax is okay
+		//DONE: this syntax is okay
 		//(this.obj = o.obj).obj_count++;
 	}
 	
@@ -79,7 +79,7 @@ object: dt sdt
 				if (this.obj ~= NULL)
 					this.dtor();
 				
-				*this = ctor(v);
+				this = ctor(v);
 			}
 		}
 		else if (is_type{v, dt#0})
@@ -91,6 +91,6 @@ object: dt sdt
 			err OBJECT_COMP_ERR;
 		}
 		
-		return *this;
+		return this;
 	}
 }

@@ -1,7 +1,7 @@
 /**********************************************************************
 AUTHOR:		Kenneth Pollick <me@kennethpollick.com>
 COPYRIGHT:	2023 Kenneth Pollick
-DATE:		2023-03-16
+DATE:		2023-04-21
 **********************************************************************/
 
 //verify interface is complete
@@ -10,7 +10,7 @@ either: (dt, dt) sdt
 	boole left;
 	memory[max{SIZE{dt#0}, SIZE{dt#1}}] buf;
 
-	ctor() { *this = {T, {}}; }
+	ctor() { this = {T, {}}; }
 
 	boole on_left() { return this.left; }
 

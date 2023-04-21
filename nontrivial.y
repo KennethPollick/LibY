@@ -1,7 +1,7 @@
 /**********************************************************************
 AUTHOR:		Kenneth Pollick <me@kennethpollick.com>
-COPYRIGHT:	2022 Kenneth Pollick
-DATE:		2022-07-30
+COPYRIGHT:	2022-2023 Kenneth Pollick
+DATE:		2023-04-21
 **********************************************************************/
 
 nontrivial: dt sdt
@@ -9,7 +9,7 @@ nontrivial: dt sdt
 	dt#0 data;
 	boole destroy;
 	
-	//ctor(dt#0 data, boole destroy) { *this = {data, destroy}; }
+	//ctor(dt#0 data, boole destroy) { this = {data, destroy}; }
 
 	dtor()
 	{

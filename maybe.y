@@ -5,7 +5,7 @@ maybe: dt sdt
 	dt#0 data;
 
 	ctor() { this.exists = F; }
-	ctor(dt#0 data) { *this = {T, data}; }
+	ctor(dt#0 data) { this = {T, data}; }
 
 	boole there() { return this.exists; }
 

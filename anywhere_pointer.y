@@ -1,7 +1,7 @@
 /**********************************************************************
 AUTHOR:		Kenneth Pollick <me@kennethpollick.com>
 COPYRIGHT:	2022-2023 Kenneth Pollick
-DATE:		2023-03-10
+DATE:		2023-04-21
 **********************************************************************/
 
 anywhere_pointer: dt sdt
@@ -10,7 +10,7 @@ anywhere_pointer: dt sdt
 	boole dealloc;
 
 	//do I enforce the deallocation?
-	//ctor(dt#0 pointer p, boole dealloc) { *this = {p, dealloc}; }
+	//ctor(dt#0 pointer p, boole dealloc) { this = {p, dealloc}; }
 
 	dtor()
 	{
