@@ -1,76 +1,31 @@
 
 
-	As you can see, I've been busy adding more examples to the library mainly about Y itself.
+As you can see, I've been busy adding more examples to the library mainly about Y itself.
 
-	Last time I had to leave early, but I was going to show the link expression that I had gotten around to designing more concretely;
-		originally, I had planned on making it a statement so it could be put at top level for dynamic linking and maybe static linking,
-		but that was before I had moved most of the "built-ins" to being hyperexpressions to clearly show delineation without syntax
-		highlighting.
+Last time I had to leave early, but I was going to show the link expression that I had gotten around to designing more concretely; originally, I had planned on making it a statement so it could be put at top level for dynamic linking and maybe static linking, but that was before I had moved most of the "built-ins" to being hyperexpressions to clearly show delineation without syntax highlighting.
 
-	Now with the link as an expression, my current design is that a library would export symbols (this is a technique used in
-		segmented binary libraries/executables on modern Operating Systems to allow for programs to interact with them without needing
-		to be compiled together) based on a type specified, so the bibliographic variables would have a type to type check against, but
-		this design I might fell since there are a few problems that arise:
-			-adding another variable property "bibliographic" when in Y it isn't any impedence for the member variables of the
-			type used to actually be pointers to those types since both the member access and procedure call syntax ignore an
-			unbroken chain of pointers in the type from the root down
-			-a valid bibliographic variable should technically be able to be a subset of the type the library is exported as,
-			so you could just use a few procedures from a library you, say, dynamically link.
+Now with the link as an expression, my current design is that a library would export symbols (this is a technique used in segmented binary libraries/executables on modern Operating Systems to allow for programs to interact with them without needing to be compiled together) based on a type specified, so the bibliographic variables would have a type to type check against, but this design I might fell since there are a few problems that arise:
+-adding another variable property "bibliographic" when in Y it isn't any impedence for the member variables of the type used to actually be pointers to those types since both the member access and procedure call syntax ignore an unbroken chain of pointers in the type from the root down
+-a valid bibliographic variable should technically be able to be a subset of the type the library is exported as, so you could just use a few procedures from a library you, say, dynamically link.
 
-	I will say the design of how I got the link expression to be able to do either of the three main linkages (static linking,
-		dynamic linking, dynamic loading) will be staying, as with all things in Y I want there to be a way to do almost everything that
-		you could possibly do (this ostensibly means that Y needs to map through compilation to almost all assembler programs (see
-		constant expression collapsing)) as Y is a general purpose programming language (and basically the only language I'll write in
-		after I finish it except for smaller languages like scripting ones or DSLs).
+I will say the design of how I got the link expression to be able to do either of the three main linkages (static linking, dynamic linking, dynamic loading) will be staying, as with all things in Y I want there to be a way to do almost everything that you could possibly do (this ostensibly means that Y needs to map through compilation to almost all assembler programs (see constant expression collapsing)) as Y is a general purpose programming language (and basically the only language I'll write in after I finish it except for smaller languages like scripting ones or DSLs).
 
-	I did research all the possible linkages just to make sure I wouldn't bite myself in the ass with this design to allow for all three
-		main linkages; the division I devised was one of three times of linking and three times of loading where the main three fall on
-		the diagonal, for both linking and loading can be at compiletime, init-time, or runtime. SLk is both at compiletime,
-		DLk both at init-time, and DLd both at runtime, but there are six more possibilities. The other two that are loaded at
-		compiletime seem to have no use at the module boundary; since linking is just the population of pointers, these seem to be user
-		problems that these solve. For the one I've titled lazy dynamic linking (i-t loading and rt linking), I don't remember if any
-		Operating System allows for this (Linux's ld might), but only seems useful for lazy initialization of a pointer table, and that
-		could easily be achieved by using dynamic loading at the very beginning of the program with lazy initialization, since that'd
-		generate the same binary (if the OS supported both).
+I did research all the possible linkages just to make sure I wouldn't bite myself in the ass with this design to allow for all three main linkages; the division I devised was one of three times of linking and three times of loading where the main three fall on the diagonal, for both linking and loading can be at compiletime, init-time, or runtime. SLk is both at compiletime, DLk both at init-time, and DLd both at runtime, but there are six more possibilities. The other two that are loaded at compiletime seem to have no use at the module boundary; since linking is just the population of pointers, these seem to be user problems that these solve. For the one I've titled lazy dynamic linking (i-t loading and rt linking), I don't remember if any Operating System allows for this (Linux's ld might), but only seems useful for lazy initialization of a pointer table, and that could easily be achieved by using dynamic loading at the very beginning of the program with lazy initialization, since that'd generate the same binary (if the OS supported both).
 
-	The remaining three link before loading which could be very helpful to reduce indirection when using many libraries. The one I've named
-		lazy loading (i-t linking and rt loading) doesn't seem greatly useful since using it for plugins would force them to all keep the
-		same offsets for exported symbols which would just beget more indirection, and it's use for a single library seems limited to
-		memory constrained environments on bare metal where one library might have to be written over to load another then the same in
-		reverse, but that's already quite a lot of overhead for hotswapping libraries. The last two are what I call "mixed" since I
-		didn't find this division until I made the chart, and these were the ones that had made me research the possible times of linking
-		and loading for my Operating System that I've been designing slowly around Y. Both are linked at compiletime, so
-		libraries/executables that use them just have normal call instructions and the like. The one I've name mixed linking (ct linking
-		and i-t loading) could be implemented in an update to segmented executable formats that allows specifying an address to "load" the
-		library at (of course this "load" address could be different for different programs by use of virtual memory addressing) which
-		gives the benefit of resolved links of static linking and the possibility of sharing as in dynamic linking hence why I called it
-		mixed linkage. As this loading is done at init-time, it is presumed the library will be loaded for the lifetime of the program, so
-		these libraries cannot overlap and multilayer use (my program mixed links multiple libraries that mixed links maybe a few others)
-		could result in an executable or library that can't load as another library is "loaded" around where it needs to be.
-		The last of the nine is what I call mixed loading (ct linking and rt loading) which also has both of the benefits of
-		mixed linking but does not have the downside of overlapping libraries completely ruining the loading of the program, but here we
-		get back into the overhead of loading and unloading libraries, and its use with plugins also begets more indirection to compensate
-		for the compiled in offsets.
+The remaining three link before loading which could be very helpful to reduce indirection when using many libraries. The one I've named lazy loading (i-t linking and rt loading) doesn't seem greatly useful since using it for plugins would force them to all keep the same offsets for exported symbols which would just beget more indirection, and it's use for a single library seems limited to memory constrained environments on bare metal where one library might have to be written over to load another then the same in reverse, but that's already quite a lot of overhead for hotswapping libraries. The last two are what I call "mixed" since I didn't find this division until I made the chart, and these were the ones that had made me research the possible times of linking and loading for my Operating System that I've been designing slowly around Y. Both are linked at compiletime, so libraries/executables that use them just have normal call instructions and the like. The one I've name mixed linking (ct linking and i-t loading) could be implemented in an update to segmented executable formats that allows specifying an address to "load" the library at (of course this "load" address could be different for different programs by use of virtual memory addressing) which gives the benefit of resolved links of static linking and the possibility of sharing as in dynamic linking hence why I called it mixed linkage. As this loading is done at init-time, it is presumed the library will be loaded for the lifetime of the program, so these libraries cannot overlap and multilayer use (my program mixed links multiple libraries that mixed links maybe a few others) could result in an executable or library that can't load as another library is "loaded" around where it needs to be. The last of the nine is what I call mixed loading (ct linking and rt loading) which also has both of the benefits of mixed linking but does not have the downside of overlapping libraries completely ruining the loading of the program, but here we get back into the overhead of loading and unloading libraries, and its use with plugins also begets more indirection to compensate for the compiled in offsets.
 
-	As we can see, the use of the other six types of linkage are useless at the library level at worst and riddled with nuance at best.
+As we can see, the use of the other six types of linkage are useless at the library level at worst and riddled with nuance at best.
 
-	I guess I've gotten a bit side tracked with that useful discussion of linkage, but it does have to do with the link expression.
-	Now, I will quickly show the latest two examples I've put into the library about Constant Expression Collapsing and the Link Grammar.
+I guess I've gotten a bit side tracked with that useful discussion of linkage, but it does have to do with the link expression.
+Now, I will quickly show the latest two examples I've put into the library about Constant Expression Collapsing and the Link Grammar.
 
-	The essence of CEC is how every expression has this property of being abstract or concrete and the hyperexpressions override the natural
-		evaluation of this which is too much to go over every detail right now, but basically if an expression itself is concrete
-		(like the multiplication expression for integers, say) and its subexpressions are concrete (say, 5 and factorial(9)) then the
-		whole expression is concrete and will be evaluated at compiletime. Also note that, at top level, abstract expressions are
-		evaluated at init-time instead of runtime.
+The essence of CEC is how every expression has this property of being abstract or concrete and the hyperexpressions override the natural evaluation of this which is too much to go over every detail right now, but basically if an expression itself is concrete (like the multiplication expression for integers, say) and its subexpressions are concrete (say, 5 and factorial(9)) then the whole expression is concrete and will be evaluated at compiletime. Also note that, at top level, abstract expressions are evaluated at init-time instead of runtime.
 
-	Okay, since I've been typing on for about two hours now, and I've at least gone over what's in the title of the stream this time, I
-		think that'll be all from me for now. Note, I probably will put an edited analysis of linking and loading upon my blog (the link
-		to my website should be in the description of the stream (www.kennethpollick.com)) at some point: maybe even before I finish the
-		other two posts.
+Okay, since I've been typing on for about two hours now, and I've at least gone over what's in the title of the stream this time, I think that'll be all from me for now. Note, I probably will put an edited analysis of linking and loading upon my blog (the link to my website should be in the description of the stream (www.kennethpollick.com)) at some point: maybe even before I finish the other two posts.
 
 
 
-							Il Fine
+					Il Fine
 	
 
 
