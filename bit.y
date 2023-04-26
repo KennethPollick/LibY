@@ -1,36 +1,38 @@
 /**********************************************************************
 AUTHOR:		Kenneth Pollick <me@kennethpollick.com>
 COPYRIGHT:	2022-2023 Kenneth Pollick
-DATE:		2023-04-21
+DATE:		2023-04-25
 **********************************************************************/
 
 bit_pointer: sdt
 {
-	flags pointer p;
+	flags[] pointer p;
 	natural[1] place;
 
-	ctor(dt pointer p, natural[1] place) { this = {cast(p, flags pointer), place % 8}; }
+	ctor(flags[] immutable pointer p, immutable natural[1] place) { this = {p, place % 8}; }
 
 	boole exists() { return this.p ~= NULL; }
 
-	become operator boole unary*() { return this.p[this.place]; }
+	become operator boole unary*() { return this.p[this.place]; }	//use safety pattern here
 
 	set() { this.p[this.place] = T; }
 
 	reset() { this.p[this.place] = F; }
+
+	//toggle
 }
 
 
 
-constant natural R_BIT_ARRAY_DEFAULT_LENGTH = 8;
+constant natural[] R_BIT_ARRAY_DEFAULT_LENGTH = 8;
 r_bit_array: sdt
 {
-	flags pointer arr;	//TODO: fix ambiguity of types with default size abstraction
-	natural len;
+	flags pointer arr;	//DONE: fixed ambiguity of types with default size abstraction
+	natural[] len;
 
 	ctor() { this = ctor(R_BIT_ARRAY_DEFAULT_LENGTH); }
 
-	ctor(natural bytes)
+	ctor(immutable natural[] bytes)
 	{
 		this = {allocate{flags[bytes]}, bytes};
 	}
@@ -38,13 +40,13 @@ r_bit_array: sdt
 	natural length() { return this.len; }
 	natural capacity() { return size{*this.arr}; }
 
-	become operator boole unary_[](natural b) { return this.arr[b]; }
+	become operator boole unary_[](immutable natural[] b) { return this.arr[b]; }
 
 	//TODO: finalize the full division hyperexpression keyword (rem) and probably make '&' for flags and boole
-	bit_pointer pointer_to(natural b)
+	bit_pointer pointer_to(immutable natural[] b)
 	{
-		natural q;
-		natural r = rem { q = b/8 };	//TODO: make list of hyperexpressions so shifts can be used here
+		natural[] q;
+		natural[] r = rem { q = b/8 };	//TODO: make list of hyperexpressions so shifts can be used here
 		return bit_pointer{cast{&this.arr[q], flags pointer}, r}
 	}
 
@@ -56,7 +58,7 @@ r_bit_array: sdt
 bit_arena[B]: sdt
 {
 	flags[B] store;
-	natural next_free;
+	natural[] next_free;
 
 	ctor() { this.reset(); }
 	reset() { this.next_free = 0; }
@@ -65,8 +67,8 @@ bit_arena[B]: sdt
 	{
 		if (this.next_free < B*8)
 		{
-			natural q;
-			natural r = rem { q = this.next_free/8 };
+			natural[] q;
+			natural[] r = rem { q = this.next_free/8 };
 			bit_pointer ret = {(&this.store) + q, r};
 			this.next_free++;
 			return ret;

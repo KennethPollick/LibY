@@ -1,16 +1,16 @@
 /**********************************************************************
 AUTHOR:		Kenneth Pollick <me@kennethpollick.com>
 COPYRIGHT:	2022-2023 Kenneth Pollick
-DATE:		2023-04-21
+DATE:		2023-04-25
 **********************************************************************/
 
+//could be an immutable data structure
 anywhere_pointer: dt sdt
 {
 	dt#0 pointer p;
 	boole dealloc;
 
-	//do I enforce the deallocation?
-	//ctor(dt#0 pointer p, boole dealloc) { this = {p, dealloc}; }
+	//ctor(dt#0 pointer p, boole dealloc) { this = {p, dealloc}; } //probably better ways of constructing this type
 
 	dtor()
 	{

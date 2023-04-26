@@ -1,11 +1,12 @@
 /**********************************************************************
 AUTHOR:		Kenneth Pollick <me@kennethpollick.com>
 COPYRIGHT:	2022-2023 Kenneth Pollick
-DATE:		2023-03-10
+DATE:		2023-04-25
 **********************************************************************/
 
-//TODO: check if use case still exists within new conventions
-ref: dt sdt
+//DONE: checked if use case still exists within new conventions
+//functions the same as an immutable pointer to dt
+reference ref: dt sdt
 {
 	dt#0 pointer p;
 	

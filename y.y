@@ -1,7 +1,7 @@
 /**********************************************************************
 AUTHOR:		Kenneth Pollick <me@kennethpollick.com>
 COPYRIGHT:	2022-2023 Kenneth Pollick
-DATE:		2023-03-10
+DATE:		2023-04-25
 PURPOSE:	To define the Y standard library
 **********************************************************************/
 
@@ -11,7 +11,6 @@ PURPOSE:	To define the Y standard library
 library y
 {	
 	const: dt sdt;
-	ref: dt sdt;
 	object: dt sdt;
 
 	version[n]: sdt;

@@ -1,21 +1,21 @@
 /**********************************************************************
 AUTHOR:		Kenneth Pollick <me@kennethpollick.com>
 COPYRIGHT:	2023 Kenneth Pollick
-DATE:		2023-04-21
+DATE:		2023-04-25
 **********************************************************************/
 
-//this should work now
 //needs evaluation
-constant stream: (dt, dt) sdt
+constant reference stream: (dt, dt) sdt
 {
 	(dt#0 maybe << dt#1 maybe) filter;
-	constant (dt#1, dt) stream pointer previous;
+	(dt#1, dt) stream pointer previous;
 
+	//again, maybe ctor is unneeded now
 	ctor((dt#0 maybe << dt#1 maybe) filter) { this = {filter, NULL}; }
 
-	(dt#3, dt#0) stream with_filter((dt maybe << dt#0 maybe) filter) { return stream{filter, this}; }
+	(dt#3, dt#0) stream with_filter((dt maybe << dt#0 maybe) filter) { return stream{filter, &this}; }
 
-	dt#0 maybe apply(dt maybe value)
+	dt#0 maybe apply(dt maybe immutable value)
 	{
 		dt#0 maybe out;
 
