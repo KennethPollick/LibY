@@ -1,17 +1,17 @@
 /**********************************************************************
 AUTHOR:		Kenneth Pollick <me@kennethpollick.com>
 COPYRIGHT:	2022-2023 Kenneth Pollick
-DATE:		2023-04-21
+DATE:		2023-05-08
 **********************************************************************/
 
-//TODO: perhaps move to a standard library centered on migration from other languages
+//DONE: moved to a standard library centered on migration from other languages
 any: sdt
 {
 	dt pointer thing;
 	
 	ctor(any a) { this.thing = allocate{*a.thing}; }
 	
-	ctor(dt#0 v) { this.thing = allocate{v}; }
+	ctor(dt v) { this.thing = allocate{v}; }
 	
 	dtor() { free{this.thing}; }
 	
@@ -38,4 +38,6 @@ any: sdt
 		
 		return this;
 	}
+
+	become operator dt pointer unary_*() { return this.thing; } //use of cast{} will now err if operand cannot safely be cast to that type
 }
