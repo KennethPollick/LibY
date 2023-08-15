@@ -20,13 +20,13 @@ immutable range: dt sdt
 
 
 
-	map_sink((dt#0>>) proc)
+	map_sink((<<dt#0) proc)
 	{
 		dt#0 h = this.high();
 		for (dt#0 c = this.low; c <= h; c++) proc(c);
 	}
 
-	dt#1 array map((dt#0>>dt) proc)
+	dt#1 array map((dt<<dt#0) proc)
 	{
 		dt#0 h = this.high();
 		dt#1 array[this.length] arr;
