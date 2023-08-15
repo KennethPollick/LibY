@@ -1,13 +1,11 @@
 /**********************************************************************
 AUTHOR:		Kenneth Pollick <me@kennethpollick.com>
 COPYRIGHT:	2022-2023 Kenneth Pollick
-DATE:		2023-04-25
+DATE:		2023-08-15
 **********************************************************************/
 
-//maybe check if bounded and unbounded ranges are needed
 //make sure to switch dt out with a type representing a well ordered set
-//could also possibly be a constant type
-range: dt sdt
+immutable range: dt sdt
 {
 	dt#0 low;
 	dt#0 length;
@@ -18,5 +16,20 @@ range: dt sdt
 		this.length = length;
 	}
 
-	dt#0 high() { return this.low + (this.length - 1); }
+	static dt#0 high() { return this.low + (this.length - 1); }
+
+
+
+	map_sink((dt#0>>) proc)
+	{
+		dt#0 h = this.high();
+		for (dt#0 c = this.low; c <= h; c++) proc(c);
+	}
+
+	dt#1 array map((dt#0>>dt) proc)
+	{
+		dt#0 h = this.high();
+		dt#1 array[this.length] arr;
+		for (dt#0 c = this.low; c <= h; c++) arr[c-this.low] = proc(c);
+	}
 }

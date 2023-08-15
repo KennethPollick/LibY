@@ -1,11 +1,11 @@
 /**********************************************************************
 AUTHOR:		Kenneth Pollick <me@kennethpollick.com>
 COPYRIGHT:	2022-2023 Kenneth Pollick
-DATE:		2023-03-10
+DATE:		2023-08-15
 **********************************************************************/
 
 //analyze to see if failure ctor check stays after CEC
-non_null: dt sdt
+reference non_null_pointer: dt sdt
 {
 	dt#0 pointer p;
 
@@ -20,13 +20,13 @@ non_null: dt sdt
 	octor(dt#0 pointer ptr)
 	{
 		if (ptr == NULL)
-			return dt#0 non_null maybe();
+			return dt#0 non_null_pointer maybe();
 		else
-			return dt#0 non_null maybe(non_null{ptr});
+			return dt#0 non_null_pointer maybe(non_null_pointer{ptr});
 	}
 
 	become operator dt#0 unary*()
 	{
-		return this.data;
+		return *this.p;
 	}
 }
