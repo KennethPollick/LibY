@@ -1,7 +1,7 @@
 /**********************************************************************
 AUTHOR:		Kenneth Pollick <me@kennethpollick.com>
 COPYRIGHT:	2023 Kenneth Pollick
-DATE:		2023-04-25
+DATE:		2023-09-02
 **********************************************************************/
 
 //needs evaluation
@@ -15,6 +15,7 @@ constant reference stream: (dt, dt) sdt
 
 	(dt#3, dt#0) stream with_filter((dt maybe << dt#0 maybe) filter) { return stream{filter, &this}; }
 
+	//maybe make defer property to bubble up failed concrete casts to the call site outside of deferred procedures
 	dt#0 maybe apply(dt maybe immutable value)
 	{
 		dt#0 maybe out;
@@ -22,11 +23,11 @@ constant reference stream: (dt, dt) sdt
 		if (this.previous ~= NULL)
 		{
 			dt#1 maybe in = this.previous.apply(value);
-			out = filter(in);
+			out = this.filter(in);
 		}
 		else
 		{
-			out = filter(value);
+			out = this.filter( concrete{cast{value, dt#1 maybe}} );
 		}
 		
 		return out;
