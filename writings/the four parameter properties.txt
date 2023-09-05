@@ -8,6 +8,8 @@ Parameter Properties
 	-moved
 		-doesn't copy
 
+//note, the default can also be moved into to remove the copying; this is done by default when it's the last use in the procedure of what's passed in
+
 
 
 ======Example======
