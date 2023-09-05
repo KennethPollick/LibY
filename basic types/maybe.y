@@ -1,3 +1,9 @@
+/**********************************************************************
+AUTHOR:		Kenneth Pollick <me@kennethpollick.com>
+COPYRIGHT:	2022-2023 Kenneth Pollick
+DATE:		2023-09-05
+**********************************************************************/
+
 //even though this type will be a part of the language, not the Y standard library, it will show not only the interface for the type but also the convention for ensuring invariants in types
 maybe: dt sdt
 {
