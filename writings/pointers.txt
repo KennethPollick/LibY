@@ -6,25 +6,28 @@ Current Possibility
 	spacer
 
 Other Possible Additions
-	non-null pointer
-	stack pointer
+	leash/link
+	non-heap pointer
 	heap pointer
 
-pointer<-------non-null pointer<--------stack pointer
-	^						^
-	 \						 \
-	  --------heap pointer<---------spacer
+
+
+Safe Converions
+	pointer<-----------------link<--------non-heap pointer
+		^						^
+		 \						 \
+		  --------heap pointer<---------spacer
 
 
 
 More
-	native anywhere_pointer
+	anywhere_pointer (as a basic type)
+	chain (points to chain-post that has data and a pointer back)
+	allocation (pointer to what's allocated and pointer to allocator which it's from)
+	managed (a type that does the job of the anywhere_pointer, nontrivial, and maybe a few other things)
 	
 
-pointer<-------non-null pointer<--------non-heap pointer
-	^						^
-	 \						 \
-	  --------heap pointer<---------spacer
+
 
 
 
