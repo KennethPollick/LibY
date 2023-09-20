@@ -1,0 +1,39 @@
+On Type Declaration:
+	immutable
+	constant
+	reference
+	element
+
+
+
+
+
+On Type in Variable Declaration:
+	immutable
+	constant
+	capture	//maybe
+
+
+
+
+
+On Variable:
+	immutable
+	constant
+
+
+
+
+
+On Expression:
+	abstract
+	concrete
+
+
+
+
+
+On Procedure:
+	static
+	global
+
