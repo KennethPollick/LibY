@@ -1,0 +1,31 @@
+Original
+	pointer
+
+Current Possibility
+	pointer
+	spacer
+
+Other Possible Additions
+	non-null pointer
+	stack pointer
+	heap pointer
+
+pointer<-------non-null pointer<--------stack pointer
+	^						^
+	 \						 \
+	  --------heap pointer<---------spacer
+
+
+
+More
+	native anywhere_pointer
+	
+
+pointer<-------non-null pointer<--------non-heap pointer
+	^						^
+	 \						 \
+	  --------heap pointer<---------spacer
+
+
+
+
