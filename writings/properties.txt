@@ -17,9 +17,9 @@ On Type in Variable Declaration:
 
 
 
-On Variable:
-	immutable
-	constant
+On Procedure Parameter:
+	become
+	moved
 
 
 

@@ -93,22 +93,56 @@ one constant keyword
 			-only the two which have the side the keyword is on and the direction of propagation the same seem good, not putting the keyword in the middle of a group of types affected
 			-none of these syntaxes change the semantics that if a constant abstract type is reified with a reference type, it won't make any types that compose it constant
 				-a way to specify a completely constant variable with abstract types may be useful
+					-might name constant-flooding
 				-with the first form of keyword on the left and constantness propagating to the left, this syntax could be that the keyword is before the variable name
 					-this would indicate that the constantness is applied to the variable itself instead of just its types, so all of it's store would be constant
-						-example:
-							-use
-								dt pointer constant p;
-							-reification
-								dt -> natural[] pointer array[10]
-							-equivalent afterwards
-								constant natural[] constant pointer array[10] constant pointer p;
+					-example:
+						-use
+							dt pointer constant p;
+						-reification
+							dt -> natural[] pointer array[10]
+						-equivalent afterwards
+							constant natural[] constant pointer array[10] constant pointer p;
+					-insufficient as it does not work with procedure types
+				-new syntax with constant at the beginning and parentheses covering what's constant-flooded
+					-example:
+						-use
+							constant(dt pointer) p;
+						-reification
+							dt -> natural[] pointer array[10]
+						-equivalent afterwards
+							constant natural[] constant pointer array[10] constant pointer p;
+					-have constant(dt) and immutable(dt) make the whole type constant or immutable even through a root reference type
+						-instead of having constant and immutable properties on variables
+						-is more in line with how to use them with procedure types, both externally and internally
+							-externally (the usual state):	constant(dt<<dt)
+							-internally (also useful):		(constant(dt)<<natural)
+						-has to start at a leaf type of the type
+							-since the leaves are the only place a type could be reified into a reference type
+							-example: dt array[2] pointer array[5]
+								-without constant flooding
+									dt array[2] constant pointer array[5]
+									constant dt array[2] pointer array[5]
+								-with new form
+									-grammatical
+										constant(dt array[2]) pointer array[5]
+											-technically only needs to encompass the dt since array isn't a reference type
+										constant(dt array[2] pointer array[5])
+											-now how to make a type completely constant
+									-err
+										dt array[2] constant(pointer array[5])
+							-multicomposition example: (dt, dt) pair pointer
+								(constant(dt), dt) pair pointer
+								(dt, constant(dt)) pair pointer
+								constant(dt, dt) pair pointer
+								constant((dt, dt) pair pointer)
 
 
 
 two constant keywords
 	-one for mere immutability and one for constantness
-		-constants are for compiletime and maybe init-time
-		-immutable variables are for variables populated at runtime
+		-constants are for compiletime
+		-immutable variables are for variables populated at init-time or runtime
 		-currently looking at both keywords being properties to apply to types in declarations
 			-both propagate the same as above
 

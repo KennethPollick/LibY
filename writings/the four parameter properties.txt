@@ -1,8 +1,6 @@
 Parameter Properties
 	-default
 		-copies
-	-immutable/constant
-		-doesn't copy
 	-become
 		-doesn't copy
 	-moved
@@ -10,7 +8,7 @@ Parameter Properties
 
 //note, the default can also be moved into to remove the copying; this is done by default when it's the last use in the procedure of what's passed in
 
-
+//note, immutable/constant parameters don't copy, but immutable and constant are no longer parameter properties; however, the root type of a parameter being immutable or constant precludes the parameter from having the become or moved property
 
 ======Example======
 
@@ -21,7 +19,7 @@ normal(natural[] a)				//makes copy
 	if (a > 100) a = a/100;
 }
 
-by_constantness(integer[] immutable i)		//doesn't make copy
+by_constantness(immutable integer[] i)		//doesn't make copy
 {
 	//i = 2;	//error: is immutable
 	if (i < -4)

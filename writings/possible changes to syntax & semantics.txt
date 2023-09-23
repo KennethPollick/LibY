@@ -99,33 +99,6 @@ switch & choice statements
 
 
 
-have constant(dt) and immutable(dt) make the whole type constant or immutable even through a root reference type
-	-instead of having constant and immutable properties on variables
-	-is more in line with how to use them with procedure types, both externally and internally
-		-externally (the usual state):	constant(dt<<dt)
-		-internally (also useful):		(constant(dt)<<natural)
-	-has to start at a leaf type of the type
-		-since the leaves are the only place a type could be reified into a reference type
-		-example: dt array[2] pointer array[5]
-			-without constant flooding
-				dt array[2] constant pointer array[5]
-				constant dt array[2] pointer array[5]
-			-with new form
-				-grammatical
-					constant(dt array[2]) pointer array[5]
-						-technically only needs to encompass the dt since array isn't a reference type
-					constant(dt array[2] pointer array[5])
-						-now how to make a type completely constant
-				-err
-					dt array[2] constant(pointer array[5])
-		-multicomposition example: (dt, dt) pair pointer
-			(constant(dt), dt) pair pointer
-			(dt, constant(dt)) pair pointer
-			constant(dt, dt) pair pointer
-			constant((dt, dt) pair pointer)
-
-
-
 maybe use '#' syntax for just derived types
 	-instead of resolving both derived types and SA parameters
 	-maybe then allow the SA vector to have zero length to deal with all cases
