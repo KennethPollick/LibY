@@ -1,0 +1,25 @@
+
+unary become operators
+
+change to make pointer dereference err when it's NULL
+
+surrogate type for placing abstract types at one less indirection
+	-implies spacer type to place one further away and have value semantics
+		-is the same as a non-null pointer
+			-which becomes useful again for use in data structures since it's not needed for regular variables because of the become property
+		-would be useful to be a basic type since it shouldn't have the overhead of optimizing away the err possible in pointer dereference
+
+addition of become to procedure parameters
+
+problems arise
+	-possibilities of allocate returning a perhaps of a spacer of the type allocated if assigned to that in addition to the normal pointer
+	-normal use of returning pointers of "this" from member procedures becomes possibly taxing with NULL checks for each procedure chained
+		-a property could fix it
+			-could have been a hidden property
+				-although, it is useful to know which things can be chained easily and which might fail
+				-not explicit
+			-the become property is a prime candidate as it does that elsewhere since what some languages call references, non-null pointers, should for the most part be transitory things (second-class citizens) as the treatment of such pointers as the thing they point to is the essence of high-level languages
+
+become property of unary operators and procedure parameters changes to property of values and procedure parameters
+	-still allows for everything that worked before like unary operators that return become values but also member procedures that return become values of "this"
+	-no optimizing overhead nor hidden property
