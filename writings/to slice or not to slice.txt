@@ -14,42 +14,15 @@ Not To Slice
 		-symbolic names
 			integer[] array pointer arr;		----->		integer[] array> <pointer arr;
 
-
-
-		normal(natural[] a)				//makes copy
-		{
-			if (a > 100) a = a/100;
-		}
-
-		by_constantness(integer[] immutable i)		//doesn't make copy
-		{
-			//i = 2;	//error: is immutable
-			if (i < -4)
-				proc();
-		}
-
-		sort(integer[] array become arr)		//doesn't make copy
-		{
-			// . . .
-		}
-
-		take(natural[] list moved l)			//doesn't make copy
-		{
-			l.dtor();
-		}
-
-		main()
-		{
-			integer[] array pointer p = api>calculate();
-			sort(p);
-
-			integer[] array arr = {-1, 4, -500, 2};		//assume is in xmm0/ymm0/zmm0 x86 SIMD register
-			sort(&arr);
-			arr[2] = 0;
-
-			natural[] r_array q = ctor(array{1, 6, 2});
-			natural[] r_array w = move{q}.append(9);	//q becomes uninitialized again
-			take(move{w});					//w becomes uninitialized again
-			//w.dtor();					//error: w is uninitialized
-		}
+	-just use a defined size abstraction to coalesce onto the pointer
+		-instead of making new syntax
+		-is more like older, terser syntax
+		-allows for 'slicing' of many levels at once
+		-example:	sort(natural[B] array[n] become arr);
+		-also works with the become property
+		-note, this does make it that whether a parameter has defined size abstraction determines whether the parameter can accept whole objects or parts
+			-can take only a full array
+				sort(natural[B] array link arr);
+			-can take subarrays as well
+				sort(natural[B] array[n] link arr);
 

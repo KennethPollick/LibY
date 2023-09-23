@@ -126,15 +126,6 @@ have constant(dt) and immutable(dt) make the whole type constant or immutable ev
 
 
 
-just use a defined size abstraction to coalesce onto the pointer
-	-instead of making new syntax
-	-is more like older, terser syntax
-	-allows for 'slicing' of many levels at once
-	-example:	sort(natural[B] array[n] become arr);
-	-also works with the become property
-
-
-
 maybe use '#' syntax for just derived types
 	-instead of resolving both derived types and SA parameters
 	-maybe then allow the SA vector to have zero length to deal with all cases
