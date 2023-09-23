@@ -1,0 +1,33 @@
+a simple grammatical change to allow only a few whitespace characters between heads and bodys
+	-to keep arbitrary whitespace to a minimum and bodies from being placed in weird places
+	-maybe grammatically (in BNF): <hb-pad> := '' | <whitespace> | <whitespace> <newline>
+		-where <whitespace> := <space> | <tab> | <newline>
+	-maybe not even allow two newlines in a row
+
+
+
+stuff this prevents:
+
+natural[] count_tabs(immutable(ascii array[n]) str)                                                                                                                                                                                                                                                          { /* . . . */ }
+
+list: dt ndt
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{
+	append(dt#0 element);
+}
