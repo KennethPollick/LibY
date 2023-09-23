@@ -4,7 +4,7 @@ Name		Glyph(s)	n-ary		Operand Type(s)
 
 assignment	=		unary		dt
 equality	==		binary		dt
-address_of	&		unary		dt
+link_to		&		unary		dt
 dereference	*		unary		pointer
 subscript	[]		unary		ndt
 addition	+		binary		group
