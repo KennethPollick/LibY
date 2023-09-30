@@ -8,7 +8,7 @@ Parameter Properties
 
 //note, the default can also be moved into to remove the copying; this is done by default when it's the last use in the procedure of what's passed in
 
-//note, immutable/constant parameters don't copy, but immutable and constant are no longer parameter properties; however, the root type of a parameter being immutable or constant precludes the parameter from having the become or moved property
+//note, immutable/constant parameters don't copy, but immutable and constant are no longer parameter properties; however, the root type of a parameter being immutable or constant (clearly at the declaration) precludes the parameter from having the become or moved property
 
 ======Example======
 
