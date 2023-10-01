@@ -6,9 +6,11 @@ Parameter Properties
 	-moved
 		-doesn't copy
 
-//note, the default can also be moved into to remove the copying; this is done by default when it's the last use in the procedure of what's passed in
+-note, the default can also be moved into to remove the copying; this is done by default when it's the last use in the procedure of what's passed in
 
-//note, immutable/constant parameters don't copy, but immutable and constant are no longer parameter properties; however, the root type of a parameter being immutable or constant (clearly at the declaration) precludes the parameter from having the become or moved property
+-note, immutable/constant parameters don't copy, but immutable and constant are no longer parameter properties; however, the root type of a parameter being immutable or constant (clearly at the declaration) precludes the parameter from having the become or moved property
+	-because as parameters that have immutable or constant root type the compiler gives them the become property to optimize their use
+	-maybe warn of the redundancy instead of erring
 
 ======Example======
 
