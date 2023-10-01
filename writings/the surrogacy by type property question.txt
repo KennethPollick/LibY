@@ -1,0 +1,39 @@
+The Type System Right Now:
+	types can:
+		-compose other types:	natural[] link
+		-have an immutable arbitrary vector of naturals define a Size Abstraction:	integer[] matrix[256, 256]
+		-be abstract or concrete
+			-types are concrete if and only if all its member procedures and constant member variables are defined, and it has at least one member variable
+		-be mutable, immutable, or constant by definition (and modification of that toward constantness, through use)
+		-be defined as reference types if they compose another type, and none of their ancestors have any type composition
+			-constantness does not propagate past reference types
+			-ignores what the type composes when determining whether the type of a variable is concrete
+				-originally, a variable could be declared only if it had a concrete type within its scope
+				-now, one variable with abstract type can be declared in a procedure
+					-it's placed at the top of the stack
+
+
+
+The Indirection Pair:
+	the types surrogate and spacer give the ability to place abstract types at one less indirection and give variable mutation to what's indirected, respectively
+
+
+
+Possible Design 1:
+	Abstract types are automatically spaced (indirected)
+		-types like natural[] list array[5] would be, in the lower level, natural[] list link array[5]
+		-is like a better version of reference-based type systems with object mutation
+		-is universally applicable
+		-isn't as efficient as the best it could be
+
+Possible Design 2:
+	Abstract types are automatically given surrogate buffers
+		-types like natural[] list array[5] would be, in the lower level, natural[] list surrogate[N] array[5]
+			-where N is a constant determined by the compiler that is the max of the sizes of the concrete types assigned
+		-isn't quite universally applicable
+		-isn't that efficient if used for every abstract type as the size of the concrete types inheriting is unbounded
+
+
+
+Possible Design 3:
+	
