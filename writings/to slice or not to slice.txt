@@ -25,4 +25,9 @@ Not To Slice
 				sort(natural[B] array link arr);
 			-can take subarrays as well
 				sort(natural[B] array[n] link arr);
+		-this eagerly coalesces if able
+			-maybe add a property to stop coalescing if you want a variable to stay small for one reason or another
+				-property bannister
+					-stops type information of the types composed from coalescing onto the type modified
+					-example: natural[B] array[n] bannister link arr;
 
