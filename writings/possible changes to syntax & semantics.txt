@@ -117,8 +117,12 @@ partial application hyperexpression
 	-takes a call expression
 		-example: constant capture(number#0 vector[n] << number vector[n]) w = partial{ vector:map(_, factorial) };
 	-underscores in the call to the enclosed procedure aren't errors, but encode the input type to the resultant procedure
+		-maybe change to dashes or allow both
 	-maybe change keyword to capture since that is what it's doing, essentially
 		-example: constant capture(natural[]<<) q = capture{ natural:multiplication(5, 37) };
+		-maybe make partial application a bigger part by removing the need for the hyperexpression except in cases where the procedure has no input
+			-example: constant capture(number#0 vector[n] << number vector[n]) w = vector:map(-, factorial);
+			-example: constant capture(natural[]<<) q = capture{ 5 * 37 };
 	-technically allows lambdas, I guess
 		-isn't as bad as random lambdas since the main call is clearly defined
 
