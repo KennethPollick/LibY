@@ -1,7 +1,7 @@
 type
 tuple
 procedure
-computation (find better name)
+computation (maybe name turing)
 lazy/memo
 c_array (also needs better name)
 fixed-list

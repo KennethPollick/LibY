@@ -128,3 +128,11 @@ partial application hyperexpression
 
 
 
+perhaps make a reversed composition operator that has the same glyph ("|>") as the reversed call operator
+	-make both left associative so if a datum is provided at the beginning of an expression, all become reversed call operators instead of mixed reversed call and reversed composition
+	-if I have the infix call operator ("<|"), perhaps make it also the normal composition operator
+		-as well as "<>" or instead
+	-or does call versus composition need to be differentiated at its use?
+
+
+
