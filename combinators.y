@@ -1,13 +1,14 @@
 /**********************************************************************
 AUTHOR:		Kenneth Pollick <me@kennethpollick.com>
 COPYRIGHT:	2023 Kenneth Pollick
-DATE:		2023-10-25
+DATE:		2023-11-19
 **********************************************************************/
 
 dt#0 X(dt x) { return x; }
 dt K(dt x, dt y) { return x; }
 dt Ki(dt x, dt y) { return y; }
 
+//NOTE, these syntaxes will be replaced once the syntaxes are solidified for these semantics (specifically procedure composition and assigning local procedures)
 constant(dt#2<<dt#0) S((dt<<(dt,dt)) f, (dt#1<<dt#0) g)
 {
 	constant capture(dt#2<<dt#0) ess = (x)
@@ -70,12 +71,14 @@ constant(dt#2<<dt#3) PHI((dt<<(dt,dt)) f, (dt#0<<dt) g, (dt#1<<dt#3) h)
 
 
 
-constant(<<boole) cond(constant procedure t, constant procedure f)
+constant(<<boole) cond((<<) t, (<<) f)
 {
 	constant capture(<<boole) d = (b)
 	{
-		ternary{b, t, f};
+		if (b) {t()} else {f()};
 	};
 	return d;
 }
+
+
 
