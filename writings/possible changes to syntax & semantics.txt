@@ -194,3 +194,11 @@ if I can have types as values, I can define size abstraction concretization as t
 
 
 
+need to revert slightly the move of become to a value property
+	-because of incompatibility with higher order procedures
+		-maybe also reducing duplication of types near the top of the hierarchy
+	-instead just optimize what the link type references into registers and add the wrapper type mentioned above 
+	-also most likely need to change the moved parameter property into a type for the same reason 
+
+
+
