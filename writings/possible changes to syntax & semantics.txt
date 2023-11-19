@@ -133,6 +133,64 @@ perhaps make a reversed composition operator that has the same glyph ("|>") as t
 	-if I have the infix call operator ("<|"), perhaps make it also the normal composition operator
 		-as well as "<>" or instead
 	-or does call versus composition need to be differentiated at its use?
+		-yes, call need be differentiated since Y is an eagerly evaluated language, and call is evaluated at runtime, but composition can be evaluated at compiletime
+
+
+
+optimization that allows construction of a choice statement at compiletime
+	-do I need this for the compiler?
+	-is this all that useful?
+	-example:
+		loop (immutable integer i, N)
+		{
+			if (something-immutable == f(i))
+			{
+				p(i)();
+			}
+		}
+	-maybe an array approach would be better to change into a choice statement
+		-maybe make it the indexed map member procedure of fixed-list or a fixed, distinct list
+
+
+
+allow if and choice expressions
+	-since I do have parallel blocks and expressions
+	-unless a library procedure that uses an array approach works as well
+	-like the parallel keyword, when expecting a statement, whether an if or choice is an expression or statement is based solely on whether what's inside its braces is an expression or statement
+		-except that in the case of if and choice that don't have braces, those are always statements
+
+
+
+remove braceless if statements
+	-do I need braceless conditionals and loops if I have partial application and procedures that can return procedures?
+
+
+
+wrapper types
+	-don't need type IDs as they do not last to runtime
+	-essentially, either
+		-plays the role of some simple macros
+			-like a reference wrapper type that simple holds a link and defines assignment to actually assign the referenced address
+		-differentiates types at compiletime that would otherwise be the same
+			-like destination and source wrapper types for use in something like memcpy
+	-has to have only one non-consant member variable
+	-can't have the class property
+	-can automatically convert to the wrapped type
+
+
+
+make the procedure/turing type's input and output both be tuples
+	-importantly, procedure types that return nothing automatically convert to returning an empty tuple
+		-example:
+			(<<string) ----> (() << (string))
+		-since an empty tuple has no information like nothing, an automatic conversion cannot mess with anything
+		-also, this is necessary since you cannot return an empty tuple by hand
+		-same with input
+	-makes the types uniform which simplifies uses of abstract procedure/turing types such as combinators and the like
+
+
+
+if I can have types as values, I can define size abstraction concretization as the subscript operator for the type type
 
 
 
