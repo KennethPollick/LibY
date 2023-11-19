@@ -1,7 +1,7 @@
 /**********************************************************************
 AUTHOR:		Kenneth Pollick <me@kennethpollick.com>
 COPYRIGHT:	2023 Kenneth Pollick
-DATE:		2023-09-28
+DATE:		2023-10-25
 **********************************************************************/
 
 dt#0 X(dt x) { return x; }
@@ -67,4 +67,15 @@ constant(dt#2<<dt#3) PHI((dt<<(dt,dt)) f, (dt#0<<dt) g, (dt#1<<dt#3) h)
 }
 
 
+
+
+
+constant(<<boole) cond(constant procedure t, constant procedure f)
+{
+	constant capture(<<boole) d = (b)
+	{
+		ternary{b, t, f};
+	};
+	return d;
+}
 
