@@ -1,13 +1,13 @@
 /**********************************************************************
 AUTHOR:		Kenneth Pollick <me@kennethpollick.com>
 COPYRIGHT:	2023 Kenneth Pollick
-DATE:		2023-09-24
+DATE:		2023-11-19
 **********************************************************************/
 
 dt : /* haha */
 {
 	right operator dt#0 unary_=(dt become a, dt#0 moved b);
-	operator boole binary_=(immutable(dt) a, immutable(dt#0) b);
+	static operator boole binary_=(dt a, dt#0 b);
 
 	ctor(dt#0 moved a);
 	move(dt#0 moved a);
