@@ -74,6 +74,7 @@ Procedure Mutability Properties:
 		-the default unless a procedure of unspecified mutability is a parameter
 	-module
 		-find whether a different fourth property would be more useful
+			-perhaps instead separate the two parts of these properties, the immutability of parameters and the scope of reference, from each other 
 	-global
 
 
@@ -151,6 +152,55 @@ optimization that allows construction of a choice statement at compiletime
 		}
 	-maybe an array approach would be better to change into a choice statement
 		-maybe make it the indexed map member procedure of fixed-list or a fixed, distinct list
+	-the recursive version will suffice instead of a special version of each loop with an immutable or constant counter variable
+		-since the use of procedure variables and higher order procedures will be easier with partial application, the reversed call operator and its friends, and procedure/turing type uniformity
+		-example:
+			compiletime-choice-closed(immutable(dt) checked, constant(dt#0 fixed-list[n]) values, immutable((<<) fixed-list[n]) paths)
+			{
+				//return if (n == 0) { }
+				else-if (checked == values[0]) { paths[0]() }
+				else { compiletime-choice(checked, values.rest(), paths.rest()) };
+				
+				if (type-of{dt#0}.STATES ~= n)	//revise these procedures' error detection
+				{
+					err "compiletime choice didn't enumerate all possible values";
+				}
+				
+				if (checked == values[0])
+				{
+					return paths[0]();
+				}
+				else
+				{
+					return compiletime-choice(checked, values.rest(), paths.rest());
+				}
+			}
+			
+			boole compiletime-choice-open(immutable(dt) checked, constant(dt#0 fixed-list[n]) values, immutable((<<) fixed-list[n]) paths)
+			{
+				if (n == 0)
+				{
+					return F;
+				}
+				else-if (checked == values[0])
+				{
+					paths[0]();
+					return T;
+				}
+				else
+				{
+					return compiletime-choice(checked, values.rest(), paths.rest());
+				}
+			}
+			
+			compiletime-choice-with-default(immutable(dt) checked, constant(dt#0 fixed-list[n]) values, immutable((<<) fixed-list[n]) paths, immutable(<<) default)
+			{
+				if (~compiletime-choice-open(checked, values, paths))
+				{
+					default();
+				}
+			}
+		-perhaps make these member procedures of the fixed-list type
 
 
 
