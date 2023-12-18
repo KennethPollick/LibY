@@ -35,5 +35,7 @@ On Expression:
 
 On Procedure:
 	static
+	local
+	module
 	global
 
