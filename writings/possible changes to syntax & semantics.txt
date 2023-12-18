@@ -68,12 +68,13 @@ Compilation Options:
 
 
 
-Procedure Mutability:
-	-now:
-		-default
-		-system
-		-static
-	-add modifiers to help with globals
+Procedure Mutability Properties:
+	-static
+	-local
+		-the default unless a procedure of unspecified mutability is a parameter
+	-module
+		-find whether a different fourth property would be more useful
+	-global
 
 
 
