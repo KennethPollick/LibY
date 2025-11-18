@@ -1,7 +1,7 @@
 /**********************************************************************
 AUTHOR:		Kenneth Pollick <me@kennethpollick.com>
 COPYRIGHT:	2023 Kenneth Pollick
-DATE:		2023-11-19
+DATE:		2023-12-18
 **********************************************************************/
 
 dt#0 X(dt x) { return x; }
@@ -78,6 +78,15 @@ constant(<<boole) cond((<<) t, (<<) f)
 		if (b) {t()} else {f()};
 	};
 	return d;
+}
+
+
+
+immutable(dt#0) convert-mutability(immutable(dt) default, (<<(dt#0 link, tuple)) proc, tuple#0 args)
+{
+	dt#0 ret = default;
+	proc(&ret, args);
+	return ret;
 }
 
 

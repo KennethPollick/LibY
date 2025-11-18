@@ -253,3 +253,8 @@ need to revert slightly the move of become to a value property
 
 
 
+perhaps add a constant mask to the possible unfilled byte
+	-allows better composition of types that aren't whole numbers of bytes
+
+
+
