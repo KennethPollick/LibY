@@ -1,0 +1,15 @@
+values might be of type int
+variables would be of type ref int
+
+examples:
+-variables
+	-constants: int i;
+	-variables: ref int p;
+-parameters
+	-values:		proc succ = (int n) int: n+1;
+	-references:	proc increment = (ref int n) int: n +:= 1; n;
+-procedure calls
+	-constant value argument:	succ(4);
+	-immutable value argument:	succ(p);
+	-mutable reference argument:	increment(p);
+

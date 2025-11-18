@@ -1,0 +1,1 @@
+The base, global allocator of Y is based on the majority of allocations happening in LIFO or FIFO order with “islands” of allocations when the program breaks from this scheme.

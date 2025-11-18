@@ -1,0 +1,65 @@
+Rust
+	&Option<T>
+	Option<&T>
+	&mut Option<T>
+	Option<&mut T>
+
+Y (naive translation)
+	immutable t perhaps immutable pointer
+	immutable t immutable pointer perhaps
+	t perhaps immutable pointer
+	t immutable pointer perhaps
+
+Y (simplified naive translation)
+	immutable t immutable pointer
+	immutable t immutable pointer
+	t perhaps immutable pointer
+	t immutable pointer
+	
+Y (best case)
+	immutable t immutable pointer
+	immutable t immutable pointer
+	t perhaps become
+	t immutable pointer
+
+Y with link type (naive translation)
+	immutable t perhaps immutable link
+	immutable t immutable link perhaps
+	t perhaps immutable link
+	t immutable link perhaps
+
+Y with link type (simplified naive translation)
+	immutable t immutable pointer
+	immutable t immutable pointer
+	t perhaps become
+	t immutable pointer
+
+
+
+Optimization to pointer
+	-Note, the optimization of changing "link perhaps" for whatever constantness to a pointer is with the assumption that the rare case of a link to address zero isn't needed.
+		-for "link perhaps"
+			-applies to all forms
+			-number of states: (t-states*addresses + 1)
+	-Similarly, "pointer perhaps" and "perhaps pointer" are optimized to a pointer by the assumption that some(NULL) and a pointer that isn't NULL to a perhaps that is none() isn't needed.
+		-for "pointer perhaps"
+			-applies to all forms
+			-number of states: (t-states*(addresses-1) + 2)
+		-for "perhaps pointer"
+			-applies when the perhaps is immutable or constant
+			-number of states: ((t-states+1)*(addresses-1) + 1)
+	-The optimization for "perhaps link" assumes both
+		-for "perhaps link"
+			-applies when the perhaps is immutable or constant
+			-number of states: ((t-states+1)*addresses)
+	-Number of states for a pointer: (t-states*(addresses-1) + 1)
+
+
+
+
+
+Rust's mut to Y's constant (Rust's mut seems to be the inverse of C's const)
+	let mut a: &mut Option<&mut T>;
+		1		2			3
+	constant t constant pointer perhaps constant pointer a;
+	3			2						1

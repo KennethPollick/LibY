@@ -1,0 +1,25 @@
+JavaScript:
+	function fizzbuzz(n) {
+		let test =
+			(d, s, x) =>
+				n % d == 0 ? _ => s + x('') : x
+		let fizz = x => test(3, 'Fizz', x)
+		let buzz = x => test(5, 'Buzz', x)
+		return fizz(buzz(x => x))(n.toString())
+	}
+
+
+
+Y:
+	string fizzbuzz(natural[] n)
+	{
+		capture constant(constant(string<<string)<<constant(natural[], string, (string<<string))) test = (d, s, x)
+		{
+			capture constant(string<<string) med = (str){ return s + x(""); };
+			return ternary{n % d == 0, med, x};
+		};
+		constant(constant(string<<string)<<constant(string<<string)) fizz = (x){ return test(3, "Fizz", x); };
+		constant(constant(string<<string)<<constant(string<<string)) buzz = (x){ return test(5, "Buzz", x); };
+		constant(string<<string) id = (x){ return x; };
+		return fizz(buzz(id))(to-string(n));
+	}
