@@ -1,0 +1,679 @@
+- operator-specifier, alias library contents, and alias member variables of a variable (maybe expand called procedure)
+- no <type> & <type>
+	- use interface pattern with static type constructing procedure
+- type:ctor
+- maybe canonical subtype
+- cast(<type>){<value>}
+- ternary(<boole>){<value>,<value>}
+- immutable closure: invocation invocation
+- fixed-list, bound-list, and list
+- value vs reference semantics
+	- related to variable vs object mutation
+		- the only options for types that have but one part
+			- assignment is the only mutating procedure in this case since it has only one part
+		- assignment can be thought of as binding (refering to another variable's value) and supplanting (overwriting so as to have another variable's value)
+			- object mutation uses both in both initialization and reassignment
+			- variable mutation uses only supplanting
+			- reference semantics uses both but allows for the possibility that one is used for initialization and the other for reassignment as long as it can be supplanted after being bound
+			- value semantics can use both as long as it is functionally the same as variable mutation
+		- variable mutation is a form of value semantics, and object mutation is a form of reference semantics
+	- parameter-passing strategy as well
+		- strategies
+			call by reference (parameter and argument use reference semantics (usually specifically binding in initialization and supplanting in reassignment))
+			call by value (parameter and argument use value semantics (usually specifically variable mutation))
+			call by address (call by value with first class references)
+			call by name (substitution of preevaluated arguments)
+			call by copy-restore (call by value where the parameters are reassigned to the arguments afterwards)
+			call by unification (substitution of evaluated values)
+			call by need (memoized call by name)
+			call by sharing (certain types are boxed and use object mutation)
+- err error types instead of strings
+- context block
+- high warning for procedures of return type type that can return different types conditionally
+- "v"table optimization for using multiple member procedures of a variable
+- THIS keyword referring to the type that you're in the definition of
+- autoformatting and no need of statement delimiters
+	- since formatting will be restricted to prevent oddities and malice of it
+- one-time block
+	one-time (loop(10, -))
+	{
+		print-hello()
+	}
+- compare old syntax and semantics of generics with possible replacement
+	- like with procedures that take parameters of these types
+		-(dt, dt#0)
+		-(dt, dt)
+		-(matrix, matrix#0)
+		-(input, input) where (type constant link input = &dt) or (type constant link input = &matrix[4,4])
+	- possibly add a subtype of type (subtype: dt type) that allows for making the type also act as a parameter like it actually is instead of making assignment work differently for the type type in parameter lists ((type mat = matrix[4,4]) weirdly being a parameter) or using constant links to types, to make arguments have the same type
+		-(matrix[4,4] subtype mat, real mat r, natural mat n)
+- parameter block
+	- maybe context block for type information
+- context block preceding parameter block
+	- instead of old '#' syntax for generics
+	- replace size abstraction declaration syntax and semantics with a context block as well
+		- each variable has to be, at least, shallowly immutable
+		- perhaps add the parameter block into type definitions for the Type Composition or put it into the context block as well
+			- maybe just make all variables of type type or only those that affect type checking of the declared type via subtyping, from the context block, use the Type Composition
+		- this then forces the old size hyper-expression to be removed
+			- possibility replace with context hyper-expression that gives a value of a type that holds each variable from its context
+				- example of type returned from possible context{a}, where a is a tensor
+					type tensor-context
+					{
+						(natural) rank
+						(natural) dimension
+					}
+	- maybe include a context block for libraries as well
+		- perhaps also allow in the context block of algorithms variables that don't relate to their parameters (and thus syntax like change-type[integer](n))
+- make example of inversion where operations are easier to add
+- find way to resolve tradeoff of adding types/operations
+- type has (boole unsafe), so type composition just ORs the inputs'
+- find way to combine more procedures that are basically the same like max and index-of-max and to extend flag use to user-defined procedures
+	- maybe this can just be done using procedure reflection like how erring procedures can be "changed" at the call site
+- allow procedures that are set as operators to take either a fixed-homogenous-expression-tree (maybe fixed-terminal-tree) or fixed-list
+	- instead of forcing procedures that need to be operators into having only two parameters
+	- allows the more efficient version to be the default
+	- removes the need for the properties that mark commutativity and associativity after adding a few more types to that list
+	- operator properties and their types
+		- associative -> fixed-list
+		- commutative and associative -> fixed-bag
+		- commutative -> fixed-terminal-tree
+		- non-associative -> fixed-ordered-terminal-tree
+- differentiate between procedure taking a closure and the wider expression being a closure
+	- ambiguity of f(g(5, -), 7)
+		- could mean a closure where its parameter is the argument to g or a procedure call that takes a closure of g as an argument
+			- type could be a procedure type or f's result type
+	- even more ambiguity for f(g(-, 42, h(a, -)))
+		- could mean a closure where its parameters are the arguments to g and h, a closure where its parameter is the argument to g alongside a closure of h, a closure where its parameter is the argument to h as part of the closure of g that's passed to f, or a procedure call that takes a closure of g that takes a closure of h
+			- type could be a procedure type that has one or two parameters or f's result type
+	- maybe add a structure syntax that gives the tree of the expression written to resolve this
+		- maybe could also help with making the values of a function type easy to express
+		- maybe this could just be a hyper-expression that changes parsing for closure syntax between assume smallest effect (f(g(4, -)) is a procedure call taking a closure) and total effect (f(g(-, h(360, -))) is a closure with two parameters)
+	- the interpunct syntax should only have close grammatical effect
+		- matches both syntax and semantics of partial application in Mathematics
+		- the bigger the expression being made into a closure, the more likely it should be a procedure itself
+- sink procedures (() << V) can be converted to another form which forces no use afterwards
+	- remember what form it is
+	- potentially was (() << (V << (), () << V))
+		- instead return what's leftover after applying the value from the ctor to the body procedure
+			[
+				(type alias) input
+				(type alias) ouput
+				return (output) out
+			]
+			(
+				(V << input) ctor
+				(output << V) body
+				(input) in
+			)
+			{
+				(V) v = ctor(in)
+				out = body(v)
+				internal-destructor-of-V(v)
+				return out
+			}
+		- actually need to sequence the ctor, body, and dtor as a closure to return
+			[
+				(type alias) input
+				(type alias) ouput
+				return (output << input) usage
+			]
+			(
+				(V << input) ctor
+				(output << V) body
+			)
+			{
+				usage = procedure-above(ctor, body, -)
+				return usage
+			}
+- another alternative to ctor and dtor
+	- procedure that takes a procedure that takes a V and returns nothing (() << (() << V))
+		- again, instead return the rest of the closure after applying the value from this procedure
+	- constructs the variable, calls the procedure parameter passing the variable, and destructs the variable
+- maybe add another type that's not a subtype of invocation for infinite loops and other algorithms that do not return
+	- then the possibility of erring can be a subtype of invocation as well and compose a type of invocation
+	- then the procedure that sequences invocations can take into account these other algorithm types, and the syntax analysis can mirror this and allow for the distinction between procedures and can-err procedures to be generalized to distinguishing between all the algorithm types
+	- also allows typing the exit syscall and the inclusion of the odd infinite loop, especially in flow analysis, generalizing what is needed for return statements anyway
+	- maybe also pure imperatives
+- trees
+	tree : structure
+	{
+		tree fixed-bag children()
+	}
+	ordered-tree : structure
+	{
+		tree fixed-list children()
+	}
+- new algorithm type names
+	algorithm
+		procedure (input, output)
+		imperative (input)
+		non-returning (input)
+		invocation (input, output)
+		non-returning-erring (input, error)
+		procedure-can-err (input, output, error)
+		operation (input, output) (maybe)
+- change procedure mutability properties
+	- definitely need to break global property into separate ones for all variables in the program and for affecting the system such as writing files
+		- to make running library procedures at compiletime more predictable and safer
+	- current properties
+		global (none of the limitations of the others)
+		module (can only resolve, via scope and name, variables within the module if not completely constant)
+		local (can only resolve variables within the procedure if not completely constant)
+		static (can only resolve variables within the procedure if not completely constant, and parameters' types must be at least immutable completely on the composing end of reference types)
+	- possible new properties
+		external-system (can access program IO such as int, syscall, in, and out instructions)
+
+		global (only resolves variables within module and submodules if not completely constant)
+		module (only resolves variables within module if not completely constant)
+		capture (only resolves variables within capture or capturing scope)
+		local (only resolves variables within procedure if not completely constant)
+
+		direct (resolved variables' types must be at least immutable completely on the composing end of reference types)
+
+		read (resolved variables that are outside local scope can only be read)
+		read-write (resolved variables that are outside local scope can be read from and written to)
+	- revision
+		external-system
+
+		anything-read
+		anything-read-write
+		module-read
+		module-read-write
+		capture
+		local
+
+		direct
+
+		relaxed-aliasing
+
+		inherit
+
+		lowlike-implementation
+
+		bounded-stack (perhaps this and a fixed-stack version should just be predicates rather than properties)
+	- revision for capability alternative
+		local-for-mutable
+		local-for-immutable
+		local-for-constant
+		module-for-mutable
+		module-for-immutable
+		module-for-constant
+		anything-for-mutable
+		anything-for-immutable
+		anything-for-constant
+
+		relaxed-aliasing
+		inherit
+		
+		arbitrary-assembly-execution (anything that has a parameter of type assembly-excerpt that it passes to another algorithm with this property like assembly>execute)
+		lowlike-implementation (anything that calls an algorithm of the above property)
+- disallow an immutable parameter and a parameter of reference to a mutable type to reference the same variable
+	- breaks the contract that the parameter is immutable
+	- of course still references to separate types are assumed to not alias
+	- copying on the inside could deal with the concrete type but limits flexibility as each procedure (possibly in each subtype) would induce a copy where forcing the user to make a copy can allow more efficient algorithms
+	- maybe disallow multiple aliases when one is to a mutable type since there aren't many algorithms that can take advantage of, say, adding something to itself in place with two references to the same thing
+		- those cases can be made into separate procedures
+		- add relaxed-aliasing property to procedures to allow for this in the few cases where it is better like memcopy
+	- maybe this analysis also takes collections into account (so natural:sum_into(THIS alias this, immutable(THIS link fixed-bag) terms) properly notices when a variable has been passed by reference as this and one of the terms)
+		- shouldn't terms be an (immutable THIS alias constant fixed-bag)?
+- copying has to use the specialization to keep the same exact type as what's copied
+	copyable : dt
+	{
+		THIS do-copy(THIS this)
+		THIS copy(THIS this) { return abstract{cast(THIS){this}}.do-copy(); }
+	}
+- parameter passing for value semantics
+	- for mutable types
+		- copy
+		- move
+		- reference of "moved"
+	- for immutable types
+		- copy
+		- move or move-restore
+		- reference
+	- by action
+		- copy (m/i)
+		- move (m/i)
+		- move-restore (i)
+		- reference (i / m (if the argument is moved))
+- parameter passing for tail call
+	- for mutable types
+		- copy
+		- move
+		- reference of "moved"
+	- for immutable types
+		- copy
+		- move or move-restore
+		- reference
+	- by action
+		- copy (m/i)
+		- move (m/i)
+		- move-restore (i)
+		- reference (i / m (if the argument is moved))
+- more abstract design
+	- dt has no members except maybe alias should go in there instead of separate, completely, from the type system
+		- the aliasing procedure should just return a constant link, and direct references should err when trying to convert constant to immutable if the composed type doesn't have the ability to be referenced at runtime from the type below
+			- instead of introducing another type or feature that would be redundant
+			- maybe it should be relaxed so that the type that gives the ability to be referenced instead gives the ability to be referenced as a mutable type
+	- the ability to copy, move, and reference variables get added through types
+		- allows for types that do special things like linear typing
+		- for types that don't have reference ability, copy-restore or move-restore can be implemented
+			- like configuring operators, allow configuring, for lexical scope, the order of choosing various methods of passing parameters
+- allow defining member procedures which overlap names from multiple supertypes
+	- something like
+		D : A, B, C
+		{
+			A:do() {}
+			B:do() {}
+			C:do() {}
+		}
+	- using a member procedure on a type like this will probably need to use the other syntax
+		A:do(d);
+	- allows for types (which aren't actually bottom types) like
+		simple-wrapper : dt dt#0
+		{
+		}
+	- allows a type to inherit from multiple types that have mutable member variables
+- make types even more abstract to accommodate perfect semantics as well as wrappers
+	- add concrete keyword fixing the type (if B inherits from A and a value of type B is assigned to a variable of type concrete A, in C++ terminology object slicing occurs)
+		- all accessing is done exactly through the type modified with the concrete keyword
+		- perhaps rename concrete keyword since its use with concrete constants exactly of non-concrete type means it can act on non-concrete types which it couldn't before
+			- also generalizes the keyword to work on types it couldn't before but needing indirection or constantness and with a weaker guarantee (the subtype could be determined via its definition of a member being provided)
+		- how this works (modifier, type, init)
+			- no concrete, concrete, one subtype
+				reified (typed as that one type)
+			- no concrete, concrete, varying st
+				reify as can, indirect rest
+			- no concrete, abstract, one st
+				reified
+			- no concrete, abstract, varying st
+				reify as can, indirect rest
+			- concrete, concrete, one st
+				slicing
+			- concrete, concrete, varying st
+				slicing
+			- concrete, abstract, one st
+				stored as that one type
+			- concrete, abstract, varying st
+				store as can, indirect rest
+	- is this needed, or can changing how constantness propagates through a type definition allow value semantics in abstract by use of the Type Composition if types don't need what they're composing when declaring an abstract variable?
+		- maybe this is what should separate what goes in the context block versus the Type Composition
+			- perhaps also how the concrete modifier propagates
+		- maybe the semantics change to put the abstract types in the context, but the syntax stays without explicit context variables
+- using variables of type (type alias) isn't going to work for making multiple arguments share the exact same type since this would mess with using it for simple renames
+	- using a concrete type should do the trick though
+- do I allow constructing a context block on a type expression
+	- [i, o]((o << i) << ((V << i), (o << V))) sink-proc-example-above
+	- if, only allow declaring names that relate portions of the constructed type like the example above
+		- since type checking happens at compiletime, all possible procedures that could be part of a type expression have to be able to be evaluated at compiletime, so any that these names would be arguments for would allow inferring the types of these names
+		- if it can't be type checked or the user would like to express the types of these variables explicitly, creating a simple type to wrap the wanted type works because of the previous complete abstraction of types
+			- example with V substituted
+type sink-procedure
+constant
+[
+	(type) sunken
+	(type) output
+	(type) input
+	(type alias) s = sunken
+	(type alias) o = output
+	(type alias) i = input
+	(type alias) wrapped-type = (o << i) << ((s << i), (o << s))
+]
+{
+	(wrapped-type alias) wrapped
+}
+			- make examples for non-constant types
+	- 
+- example of procedure to add named arguments for those who would like them
+	algorithm use-names
+	[
+		return a.returned
+	]
+	(
+		(algorithm-definition) a
+		(defined-environment) args
+	)
+	{
+		return args.concretize(a.parameters) |> a.invoke
+	}
+- library narrowing and indexing with constants
+- algorithm specifics
+	- base qualities
+		- default, can-err, or erring
+		- default or non-returning
+	- context variables
+		- fixed-list of parameter types
+		- fixed-list of returned types
+			- maybe a (type perhaps) instead
+		- error subtype perhaps
+			- this encodes returning or erring, only erring, only returning, and not returning but misses the possibilities of erring or not returning; returning or not returning; and erring, returning, or not returning
+				- this could be encoded with the construction of a power-type (a type that acts like a power set for values of types)
+					- example for low level algorithms like boot loaders and embedded devices' ({type, error subtype, singular} power-type-plus) paths = :ctor <| (driver-failure, SINGLE)
+	- perhaps a separate procedure-definition type would be good to add
+		- then definitions could start with "procedure" as well to show it should be a procedure
+		- algorithm types
+			- definition
+				- algorithm-definition
+				- procedure-definition
+			- without-reflection
+				- algorithm
+					supertype of its definition
+				- procedure
+					supertype of its definition
+- "with" algorithm like use-names above to copy constants with some small changes
+	algorithm with
+	[
+		(type-definition) k
+		return (constant k)
+	]
+	(
+		(constant k) c
+		(map) diff
+	)
+	{
+		k.
+	}
+- singular type can act as a root type when the return type of a procedure
+	- (natural<<string) is a subtype of (<<string)
+	- probably should warn if the return type being forgotten is not constant
+	- in the same vain, any type can be added to the list of parameters
+		-  (natural<<) is a subtype of (natural<<dt)
+- perhaps I can use assignment to deduce variance of context members and types in the Type Composition
+- maybe change error's name to another and allow all err, warn, and info statements to use it, change warn and info into procedures, make them only work at compiletime, or remove the two
+- allocate hyper-expression without an allocator creates a stack-allocation
+	- when that procedure is enclosed in an allocate hyper-expression that provides an allocator, it allocates from there instead
+		- or at least what isn't freed
+- weigh opaque (with canonical), concrete as type property, and concrete constant exactly of non-concrete type (especially to implement pure objects)
+	- concrete as a property would act like constant as a property where ostensibly it would be the same if each variable declared with that type had "concrete" modifying it (type t concrete => (concrete t) var)
+	- opaque blocks the use of struct literals and directly accessing members that aren't completely constant
+	- concrete constants exactly of non-concrete type are constants by defining their type's undefined constant members
+	- pure objects (including its interface supertype)
+		- empty concrete type needs to be inserted between the pure object type and its interface
+		- the pure object type can just be opaque with canonical markings
+		- the concrete constant can't implement this; it needs to reference to achieve state mutation, and even then its state has to be declared in the type, making it accessible outside
+- perhaps struct literals can just be an algorithm as well
+	- maybe this could also make constants of types that just declare only constants ((constant block-hash) h = cc(512, hash512block) where block-hash is approximately the type [b](procedure[memory[b], register]))
+		- actually, this could be how the base literals are implemented
+			- not a good idea, since these can't hold any new members
+		- could be viewed as anonymous types but is perhaps fine since the values are required to be constant, and the algorithms provided can't be methods on any mutable state in the value, so it is simpler, for it isn't as powerful
+- perhaps the opaque property could be replaced by whether the type is presented as its definition
+	- for a clear, translucent, or interface type, since you can access all its members, it makes sense to also be able to use reflection on it such as constructing a value at compiletime without using that explicit type
+	- this also makes it more general by freeing up the ability to create constant members that cannot be accessed
+	- values of such a type would access members of its supertypes only
+		- algorithms it defines that its supertype declares would still, of course, be called implicitly when the supertype is called
+		- change of type:access(t, v, m)
+			- lone-type just calls access-from-supertypes, but type-definition would specialize and check its members first and return from there or lone-type:access(t, v, m)
+			- make sure to err in acces-from-supertypes if multiple supertypes have a member named such
+	- what happens when inheriting from it, and what happens when its subtype isn't opaque
+		- accessing from a subtype would skip over the opaque type like before; although, since the members of the opaque type are completely unknown, all declared members of the opaque's supertype must be defined just in case if the subtype is to be concrete
+		- however, if the opaque type (O) declares a member but doesn't define it, the subtype of the opaque type (S) can't know to define it, so when O is used in its library of origin in the clear, S can't be concrete unless it's constant as there'd be a procedure to make a concrete constant O
+			- maybe inheriting from an opaque type forces the type to be ethereal or require a special downcast procedure that somehow exposes undefined members of the opaque type
+			- maybe supertype opaque types have to be concrete
+			- perhaps take both paths: if the opaque type is concrete then the subtype can be, but if it isn't the subtype has to be ethereal
+	- another point for this method is that you must create a separate interface supertype to the opaque type
+- type types
+	type-definition
+	lone-type
+		supertype of type-definition
+	lone-type-with-context
+		just a product type of lone-type and tuple
+	type-composition
+		any of the previous as head and tuple-type as tail
+	tuple-type
+		fixed-list of type-composition
+- possible implementation of spacer
+	type spacer
+	ethereal
+	[
+		(interface) i
+		inherit (i, ref-init)
+	]
+	(
+		i
+	)
+	{
+		(i immutable link) h
+	}
+	- perhaps types like this should be implemented with reflection
+- what difference should be left between libraries and types?
+	- libraries should be types that are fully defined so as to keep the number of copies of a library to one
+		- if something is needed from outside a library, it can just be a parameter in its algorithms or the library can be refactored into a type with the state it needs that can be instantiated by various libraries without duplication
+		- this still allows undefined variables in its context since it distributes to its elements if necessary
+- equality & alias
+	type equality
+	{
+		algorithm equals
+		[
+			(THIS subtype) e
+			(THIS subtype) E = e |> immutable |> concrete
+			return (boole)
+		]
+		(
+			(E) l
+			(E) r
+		)
+	}
+	type alias
+	constant
+	[
+		inherit equality
+	]
+	(
+		(type) aliased
+	)
+	{
+		(boole<<{THIS, THIS}) are-the-same
+		(algorithm) equals = THIS:are-the-same
+	}
+- actually while the expand statement can implement any control structure like its worse cousin the macro, it does force the algorithm implementing to be inlined
+	- to allow for both inlined and indirected use of user defined control structures, I can employ continuation passing style on algorithms
+		- CPS can still be used within a procedure (id est, the compiler can recognize its a procedure) if I add a return hyper-expression, similar to capture, that forms an algorithm since the continuation after a procedure call is itself an algorithm with no input and, of course, no ouput (because all statements in Y are algorithms, and a sequence of algorithms is an algorithm)
+	- alternatively, change the name (possibly to follow) and function of the expand statement to allow it to be used indirectly, so the optimizer or author can choose
+		- can this be an expression, and is this complete?
+		- to implement if else blocks which return on only some paths similar to other brace languages, this would make returns of type concrete singular continue the following procedure and returns of other types return from the following procedure
+			- alternatively, to be of use as an expression, return from the followed procedure with a value that isn't of type concrete singular and return from the following procedure on returns of type concrete singular
+	- perhaps both of these (return as a hyper-expression and follow as a statement and hyper-expression) are necessary since follow ostensibly needs to alter the procedure followed to add a parameter for the continuation or perhaps two for both forms
+	- perhaps add a property to algorithms to enable them within (possibly relaxed-procedure-structure)
+- view-upon-type type to implement a middle ground between no reflection and total reflection
+- one-or-many type for situations where there could be multiple or just one
+	- is this necessary over using a collection or list and picking out the first element if there is only one
+- ethereal types can be a supertype of full-types that only have access-through-value while full-types also have access-through-type
+	- alias could possibly be implemented as an ethereal type that wraps a constant link and does other optimizations
+		- link would have to map and bind then
+		- possibly all special compiler types can be implemented this way
+			- libraries can certainly be implemented as this kind of type, so the indirections that are necessary only for binaries don't need to clutter the types of the elements
+- perhaps the global allocators can also be exposed through an ethereal type or multiple so as to keep one allocator (hence one store) for global allocations throughout all modules that use a global allocator
+	- this could also be used for the global task pool
+		- the only hiccup here is that such a type would expose the parallel execution as an algorithm that has the property external-system whereas the parallel block did not have this issue
+			- this could be resolved by breaking external-system up into some type of capability system
+				- such a system could use types to mark capabilities where subtyping includes the capability (exempli gratia normal-OS inherits parallel, filesystem, network, et cetera)
+				- this would be about the same as declaring what constants the algorithm has access to (as opposed to the local, module, global scope properties which don't affect constants); perhaps access could just be unified, and then a special property for algorithms that use the assembly>execute algorithm could complete the capability algebra
+					- if, the default for constants would be whats defined in the types of its parameters, including its context block
+					- perhaps have separate properties for algorithms that directly use assembly>execute (arbitrary-execution) and (external-system) those that use arbitrary-execution and external-system or maybe invert the properties and inheritance
+						- ih, that won't work, but perhaps return to thinking about the unsafe property on the algorithm type, and make each algorithm inherit its unsafety implicitly, so it isn't a pain to deal with side-effects
+					- for these constant accessibility properties, this will now interact with dynamic dispatch by way of the new subtype type
+						- or does/should it?
+- the initialization procedures and link dereference procedure are in fact contradictory because of use of alias, and thus the optimizations like where a procedure can return a constant conditionally on an immutable to make it easier to write how you want to write must be reworked
+	- luckily for that example the return type can be inferred
+	- init must then be defined as type [t](() << (t i-link, t i-link)) for copying, moving, or smuggling and [t](() << (t i-link, t)) for moving and return optimizations
+		- for move (which returns are)
+			[t](() << (t write-only-alias, t taken))
+		- for copy
+			[t](() << (t write-only-alias, immutable t))
+		- for smuggling
+			[t](() << (t write-only-alias, t alias))
+		- perhaps have this as the signature for all although it would recur since initializing its parameter would call itself
+			[t](() << (t write-only-alias, t))
+			type ini
+			{
+				algorithm init
+				(
+					(ini write-only-alias) variable
+					(ini) value
+				)
+				{
+				}
+			}
+			- actually I can't use this signature for all three since move acts too differently to the other two (they're invariant with respect to eachother), and there are variables that can be copied from but can't be moved from, like globals (unless I have it where you can move out from one then reinitialize it before end of block) and other things where their address is an implicit part of the information they store such as things that need to be at a specific address like memmapped IO
+				- yeah, probably allow moving from globals by using the control flow analysis to assure it's reinitialized, and do the same for moving from a variable on not all branches
+				- actually I could use it where the second parameter is of type t alias, and it's provided as its definition or perhaps even as a concrete procedure if I take that into consideration for the analysis of where variables are uninitialized
+	- also, technically a mutable type can be constructed from a constant one by merely removing the constant keyword and adding an assignment taking the constants on the right hand side if it's opaque
+- a write-only reference can be implemented as an ethereal type by converting each mutable member into a procedure that takes a value of that type
+	- perhaps a write-only type can be made to deal with uninitialized variables in a type-safe manner
+		- this can probably be done if I can have procedures that consume values
+			- probably is isomorphic to a special type consuming the value which might be better suited for Y since I already have types that are special in that they are assumed to exist in the type system (like the type type)
+	- this cannot be used as a type mutability modifier since an initialization could be used on a constant t, immutable t, or mutable t
+- perhaps make an ad hoc interface type or types to implement things similar to Go's interfaces
+	- maybe just a procedure would be needed since the context block can be used for constraints upon a type anyway
+	- post-hoc-ergo-propter-hoc[(string<<natural), (yasson-string<<natural mod[5])]
+- potentially the compiler can just be the second futamura projection by fixing the input to the interpreter and just optimizing
+	- definitely, the first version of the compiler should be, so I can finish it quicker
+- the algorithm-block type can have member procedure(s) to check semantics (identifier in scope or not, type-checking, et cetera) which can be where it's implemented in the compiler
+	- it can have an enumeration in its context to tell when it's made up of merely syntactic expressions, semantic expressions, or simplified expressions
+		- actually I could make this lazy in that it, as an ethereal type, provides each as member variables that are actually computed based on the initial form
+	- also, when the input is in the library or libraries being compiled, the compiler can wait until the phase of compilation that does it passes and just replace the procedure call with the output that's already been generated by the compiler's natural process
+- another optimization: static procedures that return concrete singular and aren't provided as their definition are equivalent to no-op
+- instead of a recursive property for algorithms that don't have a static max stack depth, either make them have the can-err property with an error of stack-overflow or make them have the can-return-not property
+	- if I go with an error, this would be in keeping with how other faults are dealt with such as division by zero (err before it happens) but would depart from how these things work in that this would have to modify the procedure to check if an overflow would occur before recurring
+	- if I do both, perhaps I should define faults in the language (as in that it doesn't return), so that I can define the raw operations that can fault as properly typed algorithms
+		- actually to clarify I could define fault as a special error type that can't be removed by the hyper-expressions that convert erring procedures to ones that return a transformation of the return type
+			- to make it easier to tell at compiletime whether something can be transformed, I could just add a constant to error's context block to set as T or F or maybe use a specified enumeration type; then, faults would be errors (which they are) in the language
+			- then I can make a hyper-expression that converts faults to not returning
+- I could make a type for compiler builtins where you'd want to write them as only a few instructions but need them to not have the unsafe property since they obviously fit the definition of a procedure
+	- within this I could have both the algorithm-definition for the abstract definition of the algorithm for optimization purposes and the platform specific assembly excerpts
+		- I could use this to define builtins in terms of each other without recursion since the algorithm-definition is only used in the case where an optimization is possible by substituting the builtin for its definition
+			- specifically if no optimization is possible by substituting its parameters for its arguments and simplifing, it will use one of the assembly versions (proc or macro)
+			- perhaps I could also use this in reverse for the other type of optimization (during the concretization step only) where an ISA has implemented something as a single instruction, but it probably should be written in the other manner (or has to since the expression in question was made through optimizations) such as turning a * b + c into fmadd
+				- maybe I should separate this into a different feature which can be used for this as well as for other things that are defined as normal procedures like perhaps SQL clauses
+			- I might be able to use this to define fault making operations as such while allowing a hyper-expression to swap the fault to a non-returning path, like division as a procedure that can err with a divided-by-zero fault or call assembly>execute on the division instruction casted to remove the non-returning path
+				- alternatively I could make a fault type where I specify what inputs cause the fault and the non-returning algorithm to mask; then the algorithm-definition can be auto-generated, and it can wrap full algorithms like [n](algorithm[(n,SINGLE), (n, n)]) division
+	- actually this could be a subtype of algorithm-definition
+	- actually, I could use a similar trick as the algorithm-definition laziness to define a base-instruction type that is instantiated with some assembly excerpts for an unsupported architecture and tries to generate the rest of the instructions from those given by the abstract definitions for each of them that are defined alongside the base-instruction type
+		- same laziness for the architecture-dependant-instruction-flag that most of these will need to deal with
+		- then implement an architecture independent assembly using that (or at least what fits the type of algorithm)
+		- for implementing the base-instruction type and the assembly excerpts, include some way to specify the instruction's bit pattern (perhaps like (memory[2] << (x86-register, x86-register)) mov-rr-bit-pattern)
+		- perhaps a full-ISA type that wraps base-instruction and adds anything left out
+- actually what the call operator refers to could be defined, not just declared, at the top of the invocations and implement type checking, so it can be "caught" in the language
+	type algorithm
+		algorithm apply
+		can-err
+		(
+			(THIS) this
+			(tuple) t
+		)
+		{
+			(cdt) x = this.types
+			(cdt) y = t.types
+			(cdt) a = x.length
+			(cdt) b = y.length
+			(a == b).if-false-do <| ERR{parameter-argument-arity-mismatch(a, b)}
+			(x == y).if-false-do <| ERR{type-mismatch(x, y)}
+			// err on conversion from unsafe t to t with a fault
+			return interpret(this, t)
+		}
+	- actually what's above should be the algorithm-definition for the actual apply algorithm which will be a builtin
+	- probably also needs to have a parameter for whether the algorithm is to be executed indirectly, inline, or at compiletime
+- perhaps the concrete property for types isn't necessary in that I could just remove cast and possibly break up its two use cases into their own independent procedures
+- ponder a fourth mutability modifier again
+	- perhaps a variable that's mutable at compiletime only
+	- maybe a constant that can only be assigned values that the compiler can generate by itself as in that you can't force an expression to be at compiletime and assign it to this "internal" constant
+- instead of module and library, have more types for not just whether the library is provided as if in source but also whether the library is to be added into the intermediate file or wait until it's compiled in the final step (or interpreted, of course)
+	- maybe just encode everything in module's context block
+	- this is forgetting the api type
+- instead of downcasting for algorithms that need to use the value's actual type, I could just make subtype work that way or make a second version of subtype for this
+	- exempli gratia
+		algorithm true-copy
+		[
+			(copyable subtype) c
+			return (c)
+		]
+		(
+			(c) value
+		)
+		{
+			return value.copy()
+		}
+	- you could technically use this for multiple parameters, but I don't think this can fully implement multiple dispatch in non-orthogonal cases
+- actually casting to THIS can't just remove unsafe anyway since THIS could contain an opaque type
+	- to remove another instance of casting, just add a from-memory procedure or a type containing it (similar to the type for copying)
+- maybe when compiling in release, trim modules before full compilation is finished
+- first draft of some of the base
+	(invocation) access-member-through-type = curry:all-but(2, access-member-through-value)
+
+	algorithm access-member-through-value
+	[
+		return (dt alias)
+	]
+	(
+		(THIS) this
+		(this) value
+		(identifier) member
+	)
+	{
+		(dt dynamic-subtype) any
+		(any alias) result
+		return (any == invocation).if(partial:apply-first(value, result), result)
+	}
+
+	type dynamic-subtype
+	constant
+	[
+		inherit type
+	]
+	(
+		(type) t
+	)
+	{
+		(immutable subtype-index[t] alias) type-indicator
+	}
+	// because of constantness, first version of this: member that is constant of immutable of constant
+
+- element type similar to alias but for collections
+- I should be able to add a > b > c syntax by adding a bit to the operator overlap detection
+	- hopefully, I'll be able to also add some way to specify relation properties
+		- perhaps a form where everything is checked against one end would suffice for transitivity
+- perhaps I should just add an expression type for use by types that want an "evaluate" member procedure
+- partial:evaluate
+- type:is-subtype
+- perhaps instead of all those specialized algorithm types for dealing with machine code implementations, I just change the substitution part to substitute a whole algorithm for an instruction
+	- for this I need to defer the recursion detection until after these substitutions have been registered
+		- although they should probably be registered at the beginning of compilation anyway
+	- actually the substitution will probably require its codomain be a platform specific algorithm to ensure it's possible to map the final substrate to any machine, even subleq ones
+		- since this substitution is separate from normal algorithm flow, these platform specific ones can have a property to denote they are platform specific that, of course, transfers to the algorithms that directly use them but not to algorithms that use the one that's being substituted
+			- which means I can have a special property for foreign algorithms without need of an "unsafe" property
+			- actually, maybe separate architecture and operating system specific implementation properties would be better
+			- these properties can't actually be enforced unless I overenforce by detecting the use of the arch and os variables and also adding these properties to types and variables as well, basically
+				- I could add these properties to modules as well to shortcut the detection
+					- alternatively, I could possibly only have them on modules
+						- perhaps now designing the way to set metadata, like API and entrypoint, on the module you're in will resolve this
+				- the only other enforcement option is to make the substitution system only substitute an architecture specific algorithm in place of an architecture agnostic algorithm
+					- this of course doesn't enforce the OS specific implementation property
+		- also, it still allows me to write platform specific algorithms by interlacing assembly excerpts with normal platform agnostic algorithms
+			- pehaps I can allow the use of platform specific algorithms in a non-specific one via some mechanism or construct, but it's probably better overall to force software implementation of platform agnostic algorithms with specified ones being registered since platform definitions are ad hoc anyway
+- perhaps I'll need some way to get the type of a variable to distinguish whether an argument is constant without having a second type parameter
+- maybe type:access-member-through-type can take the Type Composition into account, so expressions like (natural link list):map can type correctly without any arguments
+	- similar thing for the context block except that also variables can be typed more abstractly
+- procedure to convert a value of some non-opaque concrete type to an associative array
+	- probably include multiple for the different possibilities: abstract type to environment, interface to fixed-list of identifiers, . . .
+- perhaps a module:substitute to choose between the implementations
+	- actually, this should be in library settings as this is compilation settings since it's only operational
+- library settings
+	- API if it's a module
+		- an (api perhaps) where if it's none it exports everything
+	- default entrypoint
+		- an invocation
+		- should I include program argument parsing by default so an invocation of type algorithm[(SINGLE), (arbitrary-natural, integer fixed-list, my-other-options)] could be provided or only allow them to have a parameter of initial-program-input and provide program argument parsing in the standard library?
+	- substitutions for this library
+		- a library-definition where variables are of the same type except potentially having those properties for being platform specific
+	- whether to substitute the modules used within this library
+		- a predicate that decides upon the module given
+		- a fixed-list with a flag to denote whether it's a list of allowed substitutions or a list of denied substitutions
+		- actually, should a library have control over transitive modules' substitutions?
+	- post-processing, potentially
+		- an invocation from library-definition to library-definition
+	- author
+	- maybe version
+	- do I add a license as well?
+	- perhaps I leave the metadata for an extra member variable that the user can choose the type of, so it doesn't just always carry extra data that's unneeded or lack data that's useful in certain cases
+
