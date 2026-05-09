@@ -4,22 +4,45 @@ COPYRIGHT:	2022-2026 Kenneth Pollick
 DATE:		2026-05-09
 **********************************************************************/
 
-//DONE: moved to a standard library centered on migration from other languages
-any: sdt
+type any
+[
+	inherit (sdt)
+]
 {
-	dt pointer thing;
+	(dt pointer) thing
 	
+	/***
 	ctor(any a) { this.thing = allocate{*a.thing}; }
 	
 	ctor(dt v) { this.thing = allocate{v}; }
 	
 	dtor() { free{this.thing}; }
+	***/
+
 	
 	
+	algorithm exists
+	[
+		return (boole)
+	]
+	(
+		(THIS) this
+	)
+	{
+		return this.thing ~= NULL
+	}
 	
-	boole exists() { return this.thing ~= NULL; }
-	
-	become operator any unary_=(dt v)
+
+
+	algorithm assign
+	[
+		(type) input
+		return (THIS)
+	]
+	(
+		(THIS alias)
+		(immutable input) v
+	)
 	{
 		if (is_type{v, any})
 		{
@@ -39,5 +62,14 @@ any: sdt
 		return this;
 	}
 
-	become operator dt pointer unary_*() { return this.thing; } //use of cast{} will now err if operand cannot safely be cast to that type
+	algorithm dereference //might have meant for this to alias the actual value
+	[
+		return (dt pointer)
+	]
+	(
+		(THIS) this
+	)
+	{
+		return this.thing
+	}
 }

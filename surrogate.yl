@@ -4,10 +4,18 @@ COPYRIGHT:	2022-2026 Kenneth Pollick
 DATE:		2026-05-09
 **********************************************************************/
 
-reference surrogate[n]: dt sdt
+type surrogate
+[
+	(natural) n
+	inherit (sdt)
+]
+(
+	(type) t
+)
 {
-	memory[n] data;
+	(memory[n]) data
 	
+	/***
 	ctor(dt#0 immutable s)
 	{
 		if (SIZE{s} > n)
@@ -15,8 +23,21 @@ reference surrogate[n]: dt sdt
 		
 		this.data = memory(s);
 	}
+	***/
 	
-	static dt#0 pointer broker() { return &this.data; }
+
+
+	algorithm broker
+	static
+	[
+		return (t link)
+	]
+	(
+		(THIS) this
+	)
+	{
+		return &this.data
+	}
 
 	//check if dereference operator is also necessary
 }

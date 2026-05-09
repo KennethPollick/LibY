@@ -4,46 +4,122 @@ COPYRIGHT:	2022-2026 Kenneth Pollick
 DATE:		2026-05-09
 **********************************************************************/
 
-bit_pointer: sdt
+type bit_pointer
+[
+	inherit (sdt)
+]
 {
-	flags[] pointer p;
-	natural[1] place;
+	(flags[] pointer) p
+	(natural[1]) place
 
+	/***
 	ctor(flags[] immutable pointer p, immutable natural[1] place) { this = {p, place % 8}; }
+	***/
 
-	boole exists() { return this.p ~= NULL; }
+	algorithm exists
+	[
+		return (boole)
+	]
+	(
+		(THIS) this
+	)
+	{
+		return this.p ~= NULL
+	}
 
-	become operator boole unary*() { return this.p[this.place]; }	//use safety pattern here
+	algorithm dereference	//use safety pattern here
+	[
+		return (boole)
+	]
+	(
+		(THIS) this
+	)
+	{
+		return this.p[this.place]
+	}
 
-	set() { this.p[this.place] = T; }
+	algorithm set
+	(
+		(THIS) this
+	)
+	{
+		this.p[this.place] = T
+	}
 
-	reset() { this.p[this.place] = F; }
+	algorithm reset
+	(
+		(THIS) this
+	)
+	{
+		this.p[this.place] = F
+	}
 
 	//toggle
 }
 
 
 
-constant natural[] R_BIT_ARRAY_DEFAULT_LENGTH = 8;
-r_bit_array: sdt
+(constant natural[]) R_BIT_ARRAY_DEFAULT_LENGTH = 8
+type r_bit_array
+[
+	inherit (sdt)
+]
 {
-	flags pointer arr;	//DONE: fixed ambiguity of types with default size abstraction
-	natural[] len;
+	(flags pointer) arr	//DONE: fixed ambiguity of types with default size abstraction
+	(natural[]) len
 
+	/***
 	ctor() { this = ctor(R_BIT_ARRAY_DEFAULT_LENGTH); }
 
 	ctor(immutable natural[] bytes)
 	{
 		this = {allocate{flags[bytes]}, bytes};
 	}
+	***/
 
-	natural length() { return this.len; }
-	natural capacity() { return size{*this.arr}; }
+	algorithm length
+	[
+		return (natural)
+	]
+	(
+		(THIS) this
+	)
+	{
+		return this.len
+	}
 
-	become operator boole unary_[](immutable natural[] b) { return this.arr[b]; }
+	algorithm capacity
+	[
+		return (natural)
+	]
+	(
+		(THIS) this
+	)
+	{
+		return size{*this.arr}
+	}
+
+	algorithm index
+	[
+		return (boole alias)
+	]
+	(
+		(THIS) this
+		(immutable natural[]) b
+	)
+	{
+		return this.arr[b]
+	}
 
 	//TODO: finalize the full division hyperexpression keyword (rem) and probably make '&' for flags and boole
-	bit_pointer pointer_to(immutable natural[] b)
+	algorithm pointer_to
+	[
+		return (bit_pointer)
+	]
+	(
+		(THIS) this
+		(immutable natural[]) b
+	)
 	{
 		natural[] q;
 		natural[] r = rem { q = b/8 };	//TODO: make list of hyperexpressions so shifts can be used here
@@ -55,15 +131,34 @@ r_bit_array: sdt
 
 
 
-bit_arena[B]: sdt
+type bit_arena
+[
+	(natural[]) B
+	inherit (sdt)
+]
 {
-	flags[B] store;
-	natural[] next_free;
+	(flags[B]) store
+	(natural[]) next_free
 
+	/***
 	ctor() { this.reset(); }
-	reset() { this.next_free = 0; }
+	***/
 
-	bit_pointer alloc()
+	algorithm reset
+	(
+		(THIS) this
+	)
+	{
+		this.next_free = 0
+	}
+
+	algorithm alloc
+	[
+		return (bit_pointer)
+	]
+	(
+		(THIS) this
+	)
 	{
 		if (this.next_free < B*8)
 		{

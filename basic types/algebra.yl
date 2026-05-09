@@ -4,44 +4,161 @@ COPYRIGHT:	2023-2026 Kenneth Pollick
 DATE:		2026-05-09
 **********************************************************************/
 
-monoid: dt
+type monoid
 {
-	associative operator monoid#0 binary_+(monoid a, monoid#0 b);
+	algorithm add
+	associative
+	[
+		return (THIS)
+	]
+	(
+		(THIS) a
+		(THIS) b
+	)
 }
 
-group: monoid
+type group
+[
+	inherit (monoid)
+]
 {
-	operator group#0 unary_-(group a);
-	operator group#0 binary_-(group a, group#0 b) { return a + (-b); }
+	algorithm negate
+	[
+		return (THIS)
+	]
+	(
+		(THIS) a
+	)
+	
+	algorithm subtract
+	(
+		(THIS) a
+		(THIS) b
+	)
+	{
+		return b.negate() |> a.add
+	}
 }
 
-ring: group
+type ring
+[
+	inherit (group)
+]
 {
-	associative operator ring#0 binary_*(ring a, ring#0 b);
-	operator ring#0 unary_/(ring nonzero a);
-	operator ring#0 binary_/(ring a, ring#0 nonzero b) { return a * (/b); }
+	algorithm multiply
+	associative
+	[
+		return (THIS)
+	]
+	(
+		(THIS) a
+		(THIS) b
+	)
+
+	algorithm invert
+	[
+		return (THIS)
+	]
+	(
+		(THIS nonzero) a
+	)
+
+	algorithm divide
+	(
+		(THIS) a
+		(THIS nonzero) b
+	)
+	{
+		return b.invert() |> a.multiply
+	}
 }
 
-field: group
+type field
+[
+	inherit (group)
+]
 {
-	associative operator field#0 binary_*(field a, field#0 b);
-	operator field#0 unary_/(field a);
-	operator field#0 binary_/(field a, field#0 b) { return a * (/b); }
+	algorithm multiply
+	associative
+	[
+		return (THIS)
+	]
+	(
+		(THIS) a
+		(THIS) b
+	)
+
+	algorithm invert
+	[
+		return (THIS)
+	]
+	(
+		(THIS) a
+	)
+
+	algorithm divide
+	(
+		(THIS) a
+		(THIS) b
+	)
+	{
+		return b.invert() |> a.multiply
+	}
 }
 
 //algebras
 
 
 
-well-ordered: dt
+type well-ordered
 {
-	operator boole binary_<(well-ordered a, well-ordered#0 b);
-	operator boole binary_>(well-ordered a, well-ordered#0 b);
-	operator boole binary_=(well-ordered a, well-ordered#0 b);
-	operator comparison binary_<=>(well-ordered a, well-ordered#0 b);
+	algorithm is-less-than
+	[
+		return (boole)
+	]
+	(
+		(THIS) a
+		(THIS) b
+	)
+
+	algorithm is-greater-than
+	[
+		return (boole)
+	]
+	(
+		(THIS) a
+		(THIS) b
+	)
+
+	algorithm is-equal-to
+	[
+		return (boole)
+	]
+	(
+		(THIS) a
+		(THIS) b
+	)
+
+	algorithm compare
+	[
+		return (comparison)
+	]
+	(
+		(THIS) a
+		(THIS) b
+	)
 }
 
-ordering: well-ordered
+type ordering
+[
+	inherit (well-ordered)
+]
 {
-	ordering#0 succ();
+	algorithm succ
+	[
+		return (THIS)
+	]
+	(
+		(THIS) this
+	)
 }

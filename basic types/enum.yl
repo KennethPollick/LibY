@@ -4,8 +4,8 @@ COPYRIGHT:	2023-2026 Kenneth Pollick
 DATE:		2026-05-09
 **********************************************************************/
 
-enum: dt
+type enum
 {
-	constant natural states;
+	(constant natural) states
 }
 

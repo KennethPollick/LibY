@@ -5,12 +5,19 @@ DATE:		2026-05-09
 **********************************************************************/
 
 //also now going to be part of the language to coincide with the addition of the execution model
-mutex: dt sdt
+type mutex
+[
+	inherit (sdt)
+]
+(
+	(type) t
+)
 {
-	dt#0 data;
-	natural pid;	//TODO: implementation change
-	boole using;
+	(t) data
+	(natural) pid	//TODO: implementation change
+	(boole) using
 	
+	/***
 	/*ctor()
 	{
 		data = dt();
@@ -21,12 +28,18 @@ mutex: dt sdt
 	{
 		this = mutex{initial, 0, F};
 	}
+	***/
 	
 	
 	
 	
 	
-	parallel wait_lock(natural my_pid)
+	algorithm wait_lock
+	parallel
+	(
+		(THIS) this
+		(natural) my_pid
+	)
 	{
 		while (this.pid ~= my_pid)
 		{
@@ -35,7 +48,17 @@ mutex: dt sdt
 		}
 	}
 	
-	parallel boole try_lock(natural my_pid)
+
+
+	algorithm try_lock
+	parallel
+	[
+		return (boole)
+	]
+	(
+		(THIS) this
+		(natural) my_pid
+	)
 	{
 		if (this.pid == 0)
 		{
@@ -45,12 +68,26 @@ mutex: dt sdt
 		return F;
 	}
 	
-	become operator dt unary_*()
+
+
+	algorithm unwrap
+	[
+		return (t)
+	]
+	(
+		(THIS) this
+	)
 	{
-		return this.data;
+		return this.data
 	}
 	
-	unlock(natural my_pid)
+
+
+	algorithm unlock
+	(
+		(THIS) this
+		(natural) my_pid
+	)
 	{
 		if (this.pid == my_pid)
 		{

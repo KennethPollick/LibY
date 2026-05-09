@@ -4,12 +4,38 @@ COPYRIGHT:	2022-2026 Kenneth Pollick
 DATE:		2026-05-09
 **********************************************************************/
 
-version[n]: sdt
+type version
+[
+	(natural) n
+	inherit (sdt)
+]
 {
-	natural vector[n] p;
+	(natural vector[n]) p
 	
-	static become operator natural unary_[](natural i) { return v[i]; }
+	algorithm index
+	static
+	[
+		return (natural)
+	]
+	(
+		(THIS) this
+		(natural) i
+	)
+	{
+		return this.p[i]
+	}
 
 	//TODO: fix inheritance of natural equality
-	static become operator version[n] unary_=(version[n] v) { this.p = v.p; }
+	algorithm assign
+	static
+	[
+		return (THIS)
+	]
+	(
+		(THIS) this
+		(THIS) v
+	)
+	{
+		this.p = v.p
+	}
 }

@@ -6,11 +6,15 @@ DATE:		2026-05-09
 
 //needs evaluation
 //TODO: check whether deprecation is needed for c_array
-c_array: dt ndt
+type c_array
+[
+	inherit (ndt)
+]
 {
-	memory pointer heap;
-	dt#0 pointer r_array indeces;
+	(memory pointer) heap
+	(t pointer r_array) indeces
 	
+	/***
 	ctor()
 	{
 		
@@ -21,9 +25,17 @@ c_array: dt ndt
 		free{heap};
 		free{indeces};
 	}
-	
-	operator dt#0 unary_[](natural index)
+	***/
+
+	algorithm index
+	[
+		return (t)
+	]
+	(
+		(THIS) this
+		(natural) i
+	)
 	{
-		return cast{dt#0, (heap + indeces[index])};
+		return cast{dt#0, (heap + indeces[index])}
 	}
 }

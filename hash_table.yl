@@ -4,18 +4,34 @@ COPYRIGHT:	2023-2026 Kenneth Pollick
 DATE:		2026-05-09
 **********************************************************************/
 
-//DONE: determined whether multicomposition is needed in the language
-hash_table[n]: (dt, dt) ndt
+type hash_table
+[
+	(natural) n
+	inherit (ndt)
+]
+(
+	(type) input
+	(type) output
+)
 {
-	constant (natural[] << dt#1) immutable pointer hash_proc;
-	dt#0 array[n] outputs;		//TODO:rename
+	(constant (natural[] << input) immutable pointer) hash_proc
+	(output array[n]) outputs		//TODO:rename
 
 	//TODO: decide collision handling method
 	//since the hash procedure is constant, this hash table might not need a ctor as a simple array or array of small list optimized linked lists wouldn't violate the definition
-	ctor(constant (natural[] << dt#1) immutable pointer hash_proc) { this.hash_proc = hash_proc; }
+	/***
+	ctor(constant (natural[] << input) immutable pointer hash_proc) { this.hash_proc = hash_proc; }
+	***/
 
-	become operator dt#0 unary_[](dt#1 index)
+	algorithm index
+	[
+		return (output alias)
+	]
+	(
+		(THIS) this
+		(input) i
+	)
 	{
-		return this.outputs[this.hash_proc(index) % n];
+		return this.outputs[this.hash_proc(i) % n]
 	}
 }

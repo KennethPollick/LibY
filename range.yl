@@ -5,28 +5,57 @@ DATE:		2026-05-09
 **********************************************************************/
 
 //make sure to switch dt out with a type representing a well ordered set
-immutable range: dt sdt
+type range
+immutable
+[
+	inherit (sdt)
+]
+(
+	(type) t
+)
 {
-	dt#0 low;
-	dt#0 length;
+	(t) low
+	(t) length
 
-	ctor(dt#0 low, dt#0 length)
+	/***
+	ctor(t low, t length)
 	{
 		this.low = low;
 		this.length = length;
 	}
+	***/
 
-	static dt#0 high() { return this.low + (this.length - 1); }
+	algorithm high
+	static
+	[
+		return (t)
+	]
+	(
+		(THIS) this
+	)
+	{
+		return this.low + (this.length - 1)
+	}
 
 
 
-	map_sink((<<dt#0) proc)
+	algorithm map_sink
+	(
+		(singular << t) proc
+	)
 	{
 		dt#0 h = this.high();
 		for (dt#0 c = this.low; c <= h; c++) proc(c);
 	}
 
-	dt#1 array map((dt<<dt#0) proc)
+	algorithm map
+	[
+		(type) output
+		return (output array)
+	]
+	(
+		(output << t) proc
+	)
 	{
 		dt#0 h = this.high();
 		dt#1 array[this.length] arr;

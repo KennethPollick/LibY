@@ -4,23 +4,47 @@ COPYRIGHT:	2023-2026 Kenneth Pollick
 DATE:		2026-05-09
 **********************************************************************/
 
-pigeon-holes[R]: dt ndt
+type pigeon-holes
+[
+	(natural) R
+	inherit (ndt)
+]
+(
+	(type) t
+)
 {
-	flags[R] there;
-	dt#0 array[8*R] boxes;
+	(flags[R]) there
+	(t array[8*R]) boxes
 
+	/***
 	ctor(dt#0 maybe array[8*R] transform)
 	{
 		for (natural c = 0; c < 8*R; c++)
 			if (this.there[c] = transform[c].exists)
 				this.boxes[c] = *transform[c];
 	}
+	***/
 
 
 
-	clear() { this.there.clear(); }
+	algorithm clear
+	[
+		return ()
+	]
+	(
+		(THIS) this
+	)
+	{
+		this.there.clear()
+	}
 
-	dt#0 maybe array[8*R] transform()
+	algorithm transform
+	[
+		return (t perhaps array[8*R])
+	]
+	(
+		(THIS) this
+	)
 	{
 		dt#0 maybe array[8*R] ret;
 

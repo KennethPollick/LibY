@@ -4,8 +4,30 @@ COPYRIGHT:	2022-2026 Kenneth Pollick
 DATE:		2026-05-09
 **********************************************************************/
 
-list: dt ndt
+type list
+[
+	inherit (ndt)
+]
+(
+	(type) t
+)
 {
-	append(dt element);
-	static dt unary_[](natural index);
+	algorithm append
+	[
+		return ()
+	]
+	(
+		(THIS) this
+		(t) element
+	)
+
+	algorithm index
+	static
+	[
+		return (t alias)
+	]
+	(
+		(THIS) this
+		(natural) i
+	)
 }

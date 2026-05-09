@@ -5,6 +5,14 @@ DATE:		2026-05-09
 PURPOSE:	To define the Y standard library
 **********************************************************************/
 
+
+
+/******
+along with the base parts of Y, this will need a full rewrite
+******/
+
+
+
 //TODO: deal with namespace collapsing and finalize keyword properties
 
 //TODO: finalize syntax and refactor the standard

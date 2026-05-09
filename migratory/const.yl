@@ -4,18 +4,49 @@ COPYRIGHT:	2022-2026 Kenneth Pollick
 DATE:		2026-05-09
 **********************************************************************/
 
-//DONE: will go in the migratory library
-immutable const: dt sdt
+type const
+immutable
+[
+	inherit (sdt)
+]
+(
+	(type) t
+)
 {
-	dt#0 data;
+	(t) data
 
-	become operator dt#0 unary_*() { return this.data; }
+	algorithm dereference
+	[
+		return (t alias)
+	]
+	(
+		(THIS) this
+	)
+	{
+		return &this.data
+	}
 }
 
-constant cconst: dt sdt
+type really-const
+constant
+[
+	inherit (sdt)
+]
+(
+	(type) t
+)
 {
-	dt#0 data;
+	(t) data
 
-	become operator dt#0 unary_*() { return this.data; }
+	algorithm dereference
+	[
+		return (t alias)
+	]
+	(
+		(THIS) this
+	)
+	{
+		return &this.data
+	}
 }
 

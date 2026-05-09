@@ -6,22 +6,85 @@ DATE:		2026-05-09
 
 //verify interface is complete
 //evaluate whether casts here can be avoided
-immutable either: (dt, dt) sdt
+type either
+immutable
+[
+	inherit (sdt)
+]
+(
+	(type) l
+	(type) r
+)
 {
-	boole left;
-	memory[max{SIZE{dt#0}, SIZE{dt#1}}] buf;
+	(boole) left
+	(memory[max{SIZE{l}, SIZE{r}}]) buf
 
+	/***
 	ctor() { this = {T, {}}; }
+	***/
 
-	boole on_left() { return this.left; }
+	algorithm on_left
+	[
+		return (boole)
+	]
+	(
+		(THIS) this
+	)
+	{
+		return this.left
+	}
 
-	dt#0 get_left() { return cast{this.buf, dt#0}; /* does this need to be a cast; can ctors understand a memory argument by default? */ }
+	algorithm get_left
+	[
+		return (l)
+	]
+	(
+		(THIS) this
+	)
+	{
+		return cast{this.buf, dt#0}
+		/* does this need to be a cast; can ctors understand a memory argument by default? */
+	}
 
-	dt#1 get_right() { return cast{this.buf, dt#1}; }
+	algorithm get_right
+	[
+		return (r)
+	]
+	(
+		(THIS) this
+	)
+	{
+		return cast{this.buf, dt#1}
+	}
 }
 
 
 
-//left and right will no longer be keywords, so this highlighting is wrong
-(dt#0, dt#1) either left(dt l, dt r) { return {T, cast{l, memory}}; }
-(dt#0, dt#1) either right(dt l, dt r) { return {F, cast{r, memory}}; }
+algorithm left
+[
+	(type) t-left
+	(type) t-right
+	return ({t-left, t-right} either)
+]
+(
+	(t-left) l
+	(t-right) r
+)
+{
+	return {T, cast{l, memory}}
+}
+
+algorithm right
+[
+	(type) t-left
+	(type) t-right
+	return ({t-left, t-right} either)
+]
+(
+	(t-left) l
+	(t-right) r
+)
+{
+	return {F, cast{r, memory}}
+}
+

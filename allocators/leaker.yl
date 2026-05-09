@@ -4,16 +4,28 @@ COPYRIGHT:	2023-2026 Kenneth Pollick
 DATE:		2026-05-09
 **********************************************************************/
 
-immutable leaker[n]: allocator
+type leaker
+immutable
+[
+	(natural[]) n
+	inherit (allocator)
+]
 {
-	boole dont_fail;
-	boole try_freeing_past_first;
-	logger pointer log;
-	allocator pointer array[n] allocators;
+	(boole) dont_fail
+	(boole) try_freeing_past_first
+	(logger pointer) log
+	(allocator pointer array[n]) allocators
 
 
 
-	byte pointer allocate(natural[] immutable s)
+	algorithm allocate
+	[
+		return (byte pointer)
+	]
+	(
+		(THIS) this
+		(natural[] |> immutable) s
+	)
 	{
 		byte pointer p = this.allocators[0].allocate(s);
 		
@@ -39,7 +51,11 @@ immutable leaker[n]: allocator
 
 
 
-	deallocate(byte pointer immutable p)
+	algorithm deallocate
+	(
+		(THIS) this
+		(byte pointer |> immutable) p
+	)
 	{
 		this.allocators[0].deallocate(p);
 		

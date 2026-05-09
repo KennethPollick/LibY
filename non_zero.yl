@@ -4,10 +4,17 @@ COPYRIGHT:	2022-2026 Kenneth Pollick
 DATE:		2026-05-09
 **********************************************************************/
 
-non_zero: dt sdt
+type non_zero
+[
+	inherit (sdt)
+]
+(
+	(type) t
+)
 {
-	dt#0 data;
+	(t) data
 
+	/***
 	ctor(dt#0 data)
 	{
 		if (data == 0)
@@ -23,10 +30,17 @@ non_zero: dt sdt
 		else
 			return dt#0 non_zero maybe(non_zero{data});
 	}
+	***/
 
-	become operator dt#0 unary_*()
+	algorithm unwrap
+	[
+		return (t)
+	]
+	(
+		(THIS) this
+	)
 	{
-		return this.data;
+		return this.data
 	}
 
 	//perhaps add mapping with clamping capability

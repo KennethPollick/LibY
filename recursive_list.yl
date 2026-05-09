@@ -5,19 +5,35 @@ DATE:		2026-05-09
 **********************************************************************/
 
 //this really needs evaluation
-constant recursive_list: dt sdt
+type recursive_list
+constant
+[
+	inherit (sdt)
+]
+(
+	(type) t
+)
 {
-	dt#0 value;
-	dt#0 recursive_list pointer next;
+	(t) value
+	(t recursive_list pointer) next
 
+	/***
 	ctor() { this = {}; }
 
 	ctor(dt#0 value) { this = {value, NULL}; }
+	***/
 
 	//I guess technically this would work as a stack that only works at compiletime
 	//should it be a list or stack, or should both be here
-	dt#0 recursive_list push(dt#0 value)
+	algorithm push
+	[
+		return (t recursive_list)
+	]
+	(
+		(THIS) this
+		(t) value
+	)
 	{
-		return {value, &this};
+		return {value, &this}
 	}
 }

@@ -5,18 +5,46 @@ DATE:		2026-05-09
 **********************************************************************/
 
 //needs evaluation
-constant reference stream: (dt, dt) sdt
+algorithm stream
+constant
+[
+	inherit (sdt)
+]
+(
+	(type) output
+	(type) input
+)
 {
-	(dt#0 maybe << dt#1 maybe) filter;
-	(dt#1, dt) stream pointer previous;
+	(output perhaps << input perhaps) filter
+	({input, dt} stream pointer) previous
 
+	/***
 	//again, maybe ctor is unneeded now
 	ctor((dt#0 maybe << dt#1 maybe) filter) { this = {filter, NULL}; }
+	***/
 
-	(dt#3, dt#0) stream with_filter((dt maybe << dt#0 maybe) filter) { return stream{filter, &this}; }
+	algorithm with_filter
+	[
+		(type) new-output
+		return ({new-ouput, output} stream)
+	]
+	(
+		(THIS) this
+		(new-output perhaps << output perhaps) filter
+	)
+	{
+		return stream{filter, &this}
+	}
 
 	//maybe make defer property to bubble up failed concrete casts to the call site outside of deferred procedures
-	dt#0 maybe apply(dt maybe immutable value)
+	algorithm apply
+	[
+		return (output perhaps)
+	]
+	(
+		(THIS) this
+		(dt perhaps |> immutable) value
+	)
 	{
 		dt#0 maybe out;
 

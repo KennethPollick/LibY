@@ -4,9 +4,16 @@ COPYRIGHT:	2023-2026 Kenneth Pollick
 DATE:		2026-05-09
 **********************************************************************/
 
-value: dt
+type value
 {
-	right operator value#0 unary_=(value become a, immutable(value#0) b)
+	algorithm assign
+	[
+		return (THIS)
+	]
+	(
+		(THIS alias) a
+		(immutable THIS) b
+	)
 	{
 		type ta = type-of{a};
 		type tb = type-of{b};
@@ -24,9 +31,15 @@ value: dt
 		}
 	}
 
-	operator boole binary_=(value a, value#0 b)
-	{
-		
+	algorithm is-equal-to
+	[
+		return (boole)
+	]
+	(
+		(THIS) a
+		(THIS) b
+	)
+	{	
 	}
 }
 

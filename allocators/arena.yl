@@ -4,21 +4,60 @@ COPYRIGHT:	2023-2026 Kenneth Pollick
 DATE:		2026-05-09
 **********************************************************************/
 
-arena[B]: allocator
+type arena
+[
+	(natural[]) B
+	inherit (allocator)
+]
 {
-	natural[] next_free;
-	byte array[B] store;
+	(natural[]) next_free
+	(byte array[B]) store
 
-	ctor() { this.reset(); }
-	reset() { this.next_free = 0; }
+	algorithm ctor
+	[
+		/* */
+	]
+	{
+		return /* */
+	}
 
-	natural[] free_space() { return B - this.next_free; }
+	algorithm reset
+	(
+		(THIS) this
+	)
+	{
+		this.next_free = 0
+	}
+
+	algorithm free_space
+	[
+		return (natural[])
+	]
+	(
+		(THIS) this
+	)
+	{
+		return B - this.next_free
+	}
 
 
 
-	deallocate(byte pointer immutable p) {}
+	algorithm deallocate
+	(
+		(THIS) this
+		(byte pointer |> immutable) p
+	)
+	{
+	}
 
-	byte pointer allocate(natural[] immutable s)
+	algorithm allocate
+	[
+		return (byte pointer)
+	]
+	(
+		(THIS) this
+		(natural[] |> immutable) s
+	)
 	{
 		if (s > this.free_space())
 			return NULL;

@@ -4,17 +4,28 @@ COPYRIGHT:	2022-2026 Kenneth Pollick
 DATE:		2026-05-09
 **********************************************************************/
 
-alias format f;
+(algorithm alias) f = format
 
-natural format_size(dt data)
+algorithm format_size
+[
+	return (natural)
+]
+(
+	(dt) data
+)
 {
-	return size{data};
+	return size{data}
 }
 
 //TODO: perhaps split format into multiple procedures, one for smaller types that returns strings and one for bigger types that write into a given buffer
 
 //TODO: actually swap to writing into str instead of returning strings
-format(ascii array pointer str, natural start, dt data)
+algorithm format
+(
+	(ascii array pointer) str
+	(natural) start
+	(dt) data
+)
 {
 	if (is_type_of{data, natural})
 	{

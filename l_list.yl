@@ -4,20 +4,30 @@ COPYRIGHT:	2022-2026 Kenneth Pollick
 DATE:		2026-05-09
 **********************************************************************/
 
-node: dt sdt
+type node
+[
+	inherit (sdt)
+]
+(
+	(type) t
+)
 {
-	dt#0 data;
-	dt#0 node pointer next;
+	(t) data
+	(t node pointer) next
 }
 
 
 
 //TODO: needs evaluation (syntax and capacity variable)
-l_list: dt list
+type l_list
+[
+	inherit (list)
+]
 {
-	dt#0 node pointer head;
-	natural length;
+	(t node pointer) head
+	(natural) length
 
+	/***
 	ctor()
 	{
 		this = {NULL, 0};
@@ -34,23 +44,44 @@ l_list: dt list
 			target = &target.next;
 		}
 	}
+	***/
 
 
 
-	natural len()
+	algorithm len
+	[
+		return (natural)
+	]
+	(
+		(THIS) this
+	)
 	{
-		return this.length;
+		return this.length
 	}
 
 
 
-	prepend(dt#0 element)
+	algorithm prepend
+	[
+		return ()
+	]
+	(
+		(THIS) this
+		(t) element
+	)
 	{
-		this.head = allocate{dt#0 node{element, this.head}};
-		this.length++;
+		this.head = allocate{dt#0 node{element, this.head}}
+		this.length++
 	}
 
-	append(dt#0 element)
+	algorithm append
+	[
+		return ()
+	]
+	(
+		(THIS) this
+		(t) element
+	)
 	{
 		this.length++;
 
@@ -68,7 +99,14 @@ l_list: dt list
 		this.head = new;
 	}
 
-	insert(dt#0 element, natural index)
+	algorithm insert
+	[
+		return ()
+	]
+	(
+		(t) element
+		(natural) index
+	)
 	{
 		dt#0 node pointer look = this.head;
 
@@ -84,11 +122,19 @@ l_list: dt list
 
 
 
-	static become operator dt#0 unary_[](natural index)
+	algorithm index
+	static
+	[
+		return (t alias)
+	]
+	(
+		(THIS) this
+		(natural) i
+	)
 	{
 		dt#0 node pointer look = this.head;
 
-		loop (index)
+		loop (i)
 		{
 			look = look.next;
 		}

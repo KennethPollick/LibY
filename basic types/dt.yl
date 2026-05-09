@@ -4,6 +4,10 @@ COPYRIGHT:	2023-2026 Kenneth Pollick
 DATE:		2026-05-09
 **********************************************************************/
 
+/*********
+updating the syntax in such a simple manner here isn't worthwhile as most here needs its interface changed as well
+*********/
+
 dt : /* haha */
 {
 	right operator dt#0 unary_=(dt become a, dt#0 moved b);

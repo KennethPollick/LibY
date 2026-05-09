@@ -4,21 +4,33 @@ COPYRIGHT:	2022-2026 Kenneth Pollick
 DATE:		2026-05-09
 **********************************************************************/
 
-obj_node: dt sdt
+type obj_node
+[
+	inherit (sdt)
+]
+(
+	(type) t
+)
 {
-	dt#0 data;
-	natural obj_count;
+	(t) data
+	(natural) obj_count
 }
 
 
 
-constant ascii array OBJECT_COMP_ERR = "Type object can only be compared against object or its composed type";
+(constant ascii array) OBJECT_COMP_ERR = "Type object can only be compared against object or its composed type"
 
-//TODO: perhaps move object, as well, to a standard library centered on migration from other languages
-object: dt sdt
+type object
+[
+	inherit (sdt)
+]
+(
+	(type) t
+)
 {
-	dt#0 obj_node pointer obj;
+	(t obj_node pointer) obj
 	
+	/***
 	ctor(dt#0 object o)
 	{
 		if ((this.obj = o.obj) ~= NULL)
@@ -48,17 +60,41 @@ object: dt sdt
 			this.obj = NULL;
 		*/
 	}
+	***/
+
 	
 	
-	
-	boole exists() { return this.obj ~= NULL; }
-	
-	become operator dt#0 unary_*()
+	algorithm exists
+	[
+		return (boole)
+	]
+	(
+		(THIS) this
+	)
 	{
-		return this.obj.data;
+		return this.obj ~= NULL
+	}
+	
+	algorithm dereference
+	[
+		return (t alias)
+	]
+	(
+		(THIS) this
+	)
+	{
+		return &this.obj.data
 	}
 
-	operator boole binary_=(dt v)
+	algorithm is-equal-to
+	[
+		(type) other
+		return (boole)
+	]
+	(
+		(THIS) this
+		(other) v
+	)
 	{
 		if (is_type{v, object})
 			return (this.obj == v.obj) || (this.obj.data == v.obj.data);
@@ -70,7 +106,15 @@ object: dt sdt
 		//return ternary{is_type(v, object), (this.obj == v.obj), (this.obj.data == v.obj.data)};
 	}
 	
-	become operator dt#0 object unary_=(dt v)
+	algorithm assign
+	[
+		(type) other
+		return (t object)
+	]
+	(
+		(THIS) this
+		(other) v
+	)
 	{
 		if (is_type{v, object})
 		{

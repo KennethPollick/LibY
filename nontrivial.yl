@@ -4,11 +4,18 @@ COPYRIGHT:	2022-2026 Kenneth Pollick
 DATE:		2026-05-09
 **********************************************************************/
 
-nontrivial: dt sdt
+type nontrivial
+[
+	inherit (sdt)
+]
+(
+	(type) t
+)
 {
-	dt#0 data;
-	boole destroy;
+	(t) data
+	(boole) destroy
 	
+	/***
 	//ctor(dt#0 data, boole destroy) { this = {data, destroy}; }
 
 	dtor()
@@ -16,6 +23,16 @@ nontrivial: dt sdt
 		if (this.destroy)
 			this.data.dtor();
 	}
+	***/
 
-	//become operator dt#0 unary*() { return this.data; }
+	algorithm unwrap
+	[
+		return (t)
+	]
+	(
+		(THIS) this
+	)
+	{
+		return this.data
+	}
 }
