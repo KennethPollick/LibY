@@ -1,7 +1,7 @@
 /**********************************************************************
 AUTHOR:		Kenneth Pollick <me@kennethpollick.com>
-COPYRIGHT:	2022-2023 Kenneth Pollick
-DATE:		2023-08-15
+COPYRIGHT:	2022-2026 Kenneth Pollick
+DATE:		2026-05-09
 **********************************************************************/
 
 //make sure to switch dt out with a type representing a well ordered set

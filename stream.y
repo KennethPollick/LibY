@@ -1,7 +1,7 @@
 /**********************************************************************
 AUTHOR:		Kenneth Pollick <me@kennethpollick.com>
-COPYRIGHT:	2023 Kenneth Pollick
-DATE:		2023-09-02
+COPYRIGHT:	2023-2026 Kenneth Pollick
+DATE:		2026-05-09
 **********************************************************************/
 
 //needs evaluation

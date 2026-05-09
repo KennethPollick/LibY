@@ -1,7 +1,7 @@
 /**********************************************************************
 AUTHOR:		Kenneth Pollick <me@kennethpollick.com>
-COPYRIGHT:	2022-2023 Kenneth Pollick
-DATE:		2023-04-21
+COPYRIGHT:	2022-2026 Kenneth Pollick
+DATE:		2026-05-09
 **********************************************************************/
 
 //also now going to be part of the language to coincide with the addition of the execution model

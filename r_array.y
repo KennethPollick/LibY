@@ -1,7 +1,7 @@
 /**********************************************************************
 AUTHOR:		Kenneth Pollick <me@kennethpollick.com>
-COPYRIGHT:	2022-2023 Kenneth Pollick
-DATE:		2023-04-25
+COPYRIGHT:	2022-2026 Kenneth Pollick
+DATE:		2026-05-09
 **********************************************************************/
 
 constant natural[] R_ARRAY_DEFAULT_LENGTH = 10;
