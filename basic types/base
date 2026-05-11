@@ -1,0 +1,88 @@
+dt (perhaps should change name to data-type)
+	invocation
+		capture
+		partial
+		curry
+	declaration (perhaps should be a library instead of a type)
+		module
+		ethereal-type
+			full-type
+				lone-type
+				lone-type-with-context
+				type-composition
+				tuple-type
+				subtype
+				dynamic-subtype
+				supertype
+				interface (note also the other three [opaque, translucent, and transparent])
+				view-upon-type
+		algorithm [also invocation]
+		definition
+			library
+			type-definition [also lone-type]
+			algorithm-definition [also algorithm]
+			operator-specification
+			singular
+			api
+			grammatical
+				expression
+				dynamic-block [also ethereal-type]
+		logic
+			binary-logic
+		error
+		reference
+			(find where direct and indirect references lie here)
+			link
+			pointer
+			tuple
+			alias
+			runtime-alias
+			write-only-alias [also ethereal-type]
+			element [also alias]
+			allocation
+		allocator
+			bound-allocator
+			dynamic-allocator
+		copied
+		taken
+		smuggled
+	fixed-collection
+		fixed-list
+		fixed-bag
+		fixed-terminal-tree
+		fixed-ordered-terminal-tree
+	bound-collection
+		bound-list
+	collection
+		list
+		dynamic-array
+	perhaps
+	value
+	equality
+	well-ordered
+	sequence
+	range
+	vector
+	matrix
+	tensor
+	number
+		natural
+			arbitrary
+			fixed-natural
+		unsigned-integer
+			...
+		integer
+			...
+		rational
+			...
+		real
+			...
+		complex
+			...
+		quaternion
+			...
+		hyperreal
+			...
+
+
+
