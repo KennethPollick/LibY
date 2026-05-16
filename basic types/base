@@ -1,4 +1,5 @@
 dt (perhaps should change name to data-type)
+	memory
 	invocation
 		capture
 		partial
@@ -25,10 +26,11 @@ dt (perhaps should change name to data-type)
 			singular
 			api
 			grammatical
+				identifier
 				expression
 				dynamic-block [also ethereal-type]
-		logic
-			binary-logic
+		logical
+			dyad
 		error
 		reference
 			(find where direct and indirect references lie here)
@@ -48,6 +50,7 @@ dt (perhaps should change name to data-type)
 		smuggled
 	fixed-collection
 		fixed-list
+			array
 		fixed-bag
 		fixed-terminal-tree
 		fixed-ordered-terminal-tree
@@ -79,7 +82,11 @@ dt (perhaps should change name to data-type)
 			...
 		complex
 			...
+		split-complex
+			...
 		quaternion
+			...
+		octonion
 			...
 		hyperreal
 			...
