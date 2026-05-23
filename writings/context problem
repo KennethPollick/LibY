@@ -1,0 +1,82 @@
+type old-context-matching
+constant
+[
+	(type) t
+]
+{
+	algorithm alg
+	[
+		return (type)
+	]
+	{
+		return t
+	}
+}
+
+type validation
+constant
+[
+	(type) t
+]
+{
+	(t alias) ref
+	
+	algorithm alg
+	[
+		(type) input
+		(type) output
+		return (output old)
+	]
+	(
+		(input) value
+	)
+	{
+		return cc(value)
+	}
+}
+
+type new-context-as-members
+constant
+[
+	(type) t
+]
+{
+	(t alias) ref
+	
+	algorithm alg
+	[
+		return (type)
+	]
+	(
+		(THIS) this
+	)
+	{
+		return this.t
+	}
+}
+
+
+
+
+
+- new-context-as-members
+	- this shifts context variables to being able to be used as members
+		- technically variables in the context have almost all the same properties as members, and since there is already syntax for having multiple members with the same name this won't cause any name collisions, so it is completely correct to allow this
+	- is an alternative to making a "context{}" hyper-expression or matching out the type of a variable and then the context from that type
+	- this seems all around a better alternative to algorithms that take parameters of THIS (and the matching from the line above)
+	
+- validation
+	- this is a case where the type composition variable isn't used for the algorithm since it needs to validate that the input, not of THIS, conforms to it, so a new type variable is used to retrieve the composed type from the returned type
+	- my writing of examples of both the previous case and this one in the compiler prompted this semantic analysis
+	- this case can't be written out as validation is crucial for correctness (and it also has appeared before), so this weakens the case for the old semantics
+	
+- old-context-matching
+	- verify this is possible in the current semantics
+	- also, should it be?
+		- technically it does introduce a free variable that is not resolved if used in "old-context-matching:alg()"
+	- if this wasn't possible, then it would have been in algorithms that take a parameter of THIS (that 't' stands alone yet refers to the one in the context of the variable of THIS)
+		- should this be possible?
+			- shortens the name (this.t => t)
+			- does force the algorithm to refer to the enclosing type's scope
+			- also doesn't work with more than one variable of the same type that can have different values of these variables
+
