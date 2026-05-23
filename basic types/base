@@ -3,11 +3,13 @@ dt (perhaps should change name to data-type)
 	invocation
 		capture
 		partial
-		curry
+		curry (also need to find a different name)
+		lazy
+		memo
 	declaration (perhaps should be a library instead of a type)
 		module
 		ethereal-type
-			full-type
+			type
 				lone-type
 				lone-type-with-context
 				type-composition
@@ -59,6 +61,7 @@ dt (perhaps should change name to data-type)
 	collection
 		list
 		dynamic-array
+	c_array (change name)
 	perhaps
 	value
 	equality
