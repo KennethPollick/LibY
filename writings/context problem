@@ -74,6 +74,10 @@ constant
 	- verify this is possible in the current semantics
 	- also, should it be?
 		- technically it does introduce a free variable that is not resolved if used in "old-context-matching:alg()"
+		- I don't seem to have written it into the "next show" document, but I remember this is how it worked in those semantics as context variables from types move to algorithms' context the same as how context variables of modules move to members' context in that, through reification, the context variables are duplicated to each (in each case)
+			- this happens for modules to keep singularity, so no duplication of modules is needed in a program or library no matter how many times nor where in the dependency graph they appear
+			- can this be used only on modules so to be removed from types?
+				- perhaps it shall be left off types for the first version of the compiler, unless a compelling case is found
 	- if this wasn't possible, then it would have been in algorithms that take a parameter of THIS (that 't' stands alone yet refers to the one in the context of the variable of THIS)
 		- should this be possible?
 			- shortens the name (this.t => t)
