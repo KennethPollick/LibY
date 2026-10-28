@@ -1,0 +1,17 @@
+for keywords like return, err, follow, and alias that can be used in a dynamic block, another parsing problem occurs: this time a name collision possibility
+
+
+
+- hope no one uses the same as an identifier
+	- unless I find a worse complication, it is technically still possible to parse but might need to look all the way to the end of the line
+		- when an identifier is in scope a line in a dynamic block can just be an expression which can have that identifier at its beginning, and these keywords basically all need an expression after them, so the expression part of the former shouldn't ever match the expression of the latter, allowing proper parsing; however, this means the user, as well, potentially needs to read the whole line to understand which type of statement it is, and it could cause problems in parsing such as increasing runtime significantly, if I leave lines unbounded, or making easier or creating errors in the process of parsing
+	- original approach until I remembered the alias statement would be in dynamic blocks, which can clash with the type alias
+- change the keywords to not parse as identifiers
+	- I didn't want to take this path as it does seem quite nice to be able to write keywords like identifiers, but it seems this is the only good option if the keywords can be altered minimally
+		- unless I can show grammatically that the ambiguity for the first option fades away by the next node in the semantics that isn't an operator
+- reserve them
+	- the approach I was avoiding as they could be useful as names in libraries as well, and a random assortment of (English) words reserved is a minefield for the user
+- change the keywords to all caps
+	- originallly I was thinking of having the convention of Y be to use kebab case normally and use upper case snake case for constants, like C's usual convention except with the nice ability to not need to use the shift key between words unlike normal snake case in lower case; although as I've been writing in Y as I've been making it at some point I just stopped using upper case text in identifiers especially once I realized that that convention has procedures and types in lower case, but since they are first class in Y they can be and actually are all constants, so those two already do not follow that capitalization scheme.
+	- unfortunately, capitalizing only the keywords which could conflict, those that appear in dynamic blocks, seems not the best design, so all keywords would be capitalized, thus increasing the need for the shift key contrary to the convention stated above and removing the clear visual distinction between the statement and hyper-expression versions of err, follow, and return
+	- also removing capitalization from identifiers so as to make this the same as option 2 can ruin useful abbreviations
