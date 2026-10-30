@@ -15,3 +15,9 @@ for keywords like return, err, follow, and alias that can be used in a dynamic b
 	- originallly I was thinking of having the convention of Y be to use kebab case normally and use upper case snake case for constants, like C's usual convention except with the nice ability to not need to use the shift key between words unlike normal snake case in lower case; although as I've been writing in Y as I've been making it at some point I just stopped using upper case text in identifiers especially once I realized that that convention has procedures and types in lower case, but since they are first class in Y they can be and actually are all constants, so those two already do not follow that capitalization scheme.
 	- unfortunately, capitalizing only the keywords which could conflict, those that appear in dynamic blocks, seems not the best design, so all keywords would be capitalized, thus increasing the need for the shift key contrary to the convention stated above and removing the clear visual distinction between the statement and hyper-expression versions of err, follow, and return
 	- also removing capitalization from identifiers so as to make this the same as option 2 can ruin useful abbreviations
+- change these keywords to variables
+	- the dynamic language option
+	- an approach I dismissed when designing the features that sidestep block structured form like the follow statement
+		- even if possible without exposing too much of the language internals, it has the same problems as reserving them and introduces complications of whether the correct ones have been brought into scope
+		- and I shall dismiss again
+
