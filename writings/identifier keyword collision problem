@@ -21,3 +21,8 @@ for keywords like return, err, follow, and alias that can be used in a dynamic b
 		- even if possible without exposing too much of the language internals, it has the same problems as reserving them and introduces complications of whether the correct ones have been brought into scope
 		- and I shall dismiss again
 
+
+
+- conclusion
+	- to resolve the issue immediately, I am changing the keywords now to be readily identifiable as not an identifier by prepending an arbitrary character that appears nowhere else, as it also simplifies the grammar slightly for the time being; then once I have the grammar complete, if it is possible to parse them correctly and efficiently without such alterations, they will be returned to looking like identifiers
+
